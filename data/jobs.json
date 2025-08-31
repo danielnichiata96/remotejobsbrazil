@@ -1,0 +1,24 @@
+[
+  {
+    "id": "seed-1",
+    "title": "Frontend Engineer",
+    "company": "Tech Samba",
+    "location": "Brazil (Remote)",
+    "type": "Full-time",
+    "salary": "R$ 18k–25k/mês",
+    "applyUrl": "https://example.com/apply/frontend",
+    "description": "Build modern UIs with React/Next.js for a fully remote Brazilian team.",
+    "createdAt": "2025-08-30T12:00:00.000Z"
+  },
+  {
+    "id": "seed-2",
+    "title": "Backend Developer (Node.js)",
+    "company": "Cloud Carioca",
+    "location": "Brazil (Remote)",
+    "type": "Contract",
+    "salary": "R$ 120–160/hora",
+    "applyUrl": "https://example.com/apply/backend",
+    "description": "APIs em Node.js, Postgres e filas. Experiência com cloud é um plus.",
+    "createdAt": "2025-08-29T09:30:00.000Z"
+  }
+]

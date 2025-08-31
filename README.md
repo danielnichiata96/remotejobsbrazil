@@ -1,6 +1,46 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+Remote Jobs Brazil — a lean job board built with Next.js 15 + React 19.
 
-## Getting Started
+Features
+ - Home page lists jobs from a simple JSON file.
+ - Post Job page with a form that writes to /api/jobs.
+ - No database required; ideal for quick deployment to Vercel.
+ - Import page to bulk add jobs from other boards (JSON/NDJSON).
+
+Quick start
+1) Install dependencies
+```bash
+pnpm install || npm install || yarn
+```
+2) Run locally
+```bash
+npm run dev
+```
+3) Open http://localhost:3000
+
+Add a job
+ - Go to /post and submit the form. Jobs are saved to data/jobs.json (when the filesystem is writable). On serverless read-only FS, the job still posts in-memory for that request.
+
+Bulk import jobs
+- Go to /import and paste:
+	- JSON array: `[{"title":"...","company":"...","applyUrl":"https://..."}]`
+	- Or NDJSON (one JSON per line)
+- Required fields: title, company, applyUrl. Optional: location, type, salary, description.
+
+Tips for common sources
+- Greenhouse: Many companies expose jobs JSON at `https://boards.greenhouse.io/<company>?format=json`. Map fields to this app’s format and paste into /import.
+- Ashby: Use their Job Board API or export tools to get JSON, then map to { title, company, applyUrl, location?, type?, salary?, description? }.
+
+API
+ - GET /api/jobs → { jobs: Job[] }
+ - POST /api/jobs { title, company, applyUrl, location?, type?, salary?, description? } → { job }
+
+Deploy to Vercel
+ - Push this repo to GitHub and import it in Vercel. No extra config needed.
+
+Notes
+ - For persistent data in production, consider a hosted DB (e.g., Vercel Postgres, Supabase) later. The lib is isolated in src/lib/jobs.ts so you can swap the storage.
+ - Import endpoint: POST /api/jobs/bulk with `{ jobs: Partial<Job>[] }`.
+
 
 First, run the development server:
 
@@ -24,8 +64,6 @@ This project uses [`next/font`](https://nextjs.org/docs/app/building-your-applic
 
 To learn more about Next.js, take a look at the following resources:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
 You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
 
