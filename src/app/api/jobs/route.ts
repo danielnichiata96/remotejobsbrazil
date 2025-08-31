@@ -7,7 +7,16 @@ import { getSupabase } from "@/lib/supabase";
 
 export async function GET() {
   const jobs = await readJobs();
-  return NextResponse.json({ jobs });
+  
+  return NextResponse.json(
+    { jobs },
+    {
+      headers: {
+        'Cache-Control': 'public, max-age=300, s-maxage=600', // 5 min browser, 10 min CDN
+        'Content-Type': 'application/json',
+      },
+    }
+  );
 }
 
 export async function POST(request: Request) {
