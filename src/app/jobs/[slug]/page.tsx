@@ -36,30 +36,67 @@ export default async function JobPage({ params }: Props) {
   const jsonLd = jobToJsonLd(job);
 
   return (
-    <div className="min-h-screen px-6 py-10 max-w-3xl mx-auto">
-  <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <nav className="mb-6 text-sm">
-        <Link href="/" className="underline">← Back to jobs</Link>
-      </nav>
-      <h1 className="text-2xl font-bold">{job.title}</h1>
-      <p className="text-sm text-zinc-600 dark:text-zinc-400">
-        {job.company} • {job.location} • {job.type}
-      </p>
-      {job.salary && (
-        <p className="mt-2 text-sm"><strong>Salary:</strong> {job.salary}</p>
-      )}
-      {job.description && (
-        <article className="prose dark:prose-invert mt-4 whitespace-pre-wrap">{job.description}</article>
-      )}
-      <div className="mt-6">
-        <a
-          href={job.applyUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center justify-center rounded-md bg-black text-white dark:bg-white dark:text-black px-4 py-2 text-sm font-medium hover:opacity-90"
-        >
-          Apply on company site →
-        </a>
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 px-6 py-10">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <div className="max-w-3xl mx-auto">
+        <nav className="mb-6 text-sm">
+          <Link href="/" className="text-blue-600 hover:underline dark:text-blue-400">
+            ← Voltar para vagas
+          </Link>
+        </nav>
+
+        <header className="mb-6">
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-white">{job.title}</h1>
+          <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
+            <span className="font-medium text-gray-800 dark:text-gray-200">{job.company}</span>
+            {job.location && <> • {job.location}</>}
+            {job.type && (
+              <>
+                {" "}• <span className="text-green-600 dark:text-green-400">{job.type}</span>
+              </>
+            )}
+          </p>
+          {job.salary && (
+            <p className="mt-2 inline-flex items-center gap-2 text-sm text-gray-700 dark:text-gray-300">
+              <span className="rounded-full bg-gray-100 dark:bg-gray-700 px-2 py-1">{job.salary}</span>
+            </p>
+          )}
+        </header>
+
+        {job.tags && job.tags.length > 0 && (
+          <div className="mb-4 flex flex-wrap gap-2">
+            {job.tags.slice(0, 8).map((t) => (
+              <span
+                key={t}
+                className="text-xs uppercase tracking-wider bg-blue-50 dark:bg-blue-900/50 text-blue-700 dark:text-blue-300 px-2 py-1 rounded-full"
+              >
+                {t}
+              </span>
+            ))}
+          </div>
+        )}
+
+        {job.description && (
+          <article className="prose dark:prose-invert prose-headings:scroll-mt-24 prose-a:text-blue-600 dark:prose-a:text-blue-400 mt-6">
+            <pre className="whitespace-pre-wrap font-sans text-base leading-7 text-gray-800 dark:text-gray-200">
+              {job.description}
+            </pre>
+          </article>
+        )}
+
+        <div className="mt-8">
+          <a
+            href={job.applyUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center justify-center rounded-md bg-blue-600 text-white px-5 py-2 text-sm font-medium hover:bg-blue-700 transition-colors"
+          >
+            Candidatar-se no site da empresa →
+          </a>
+        </div>
       </div>
     </div>
   );

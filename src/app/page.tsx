@@ -6,68 +6,61 @@ export const dynamic = "force-dynamic";
 export default async function Home() {
   const jobs: Job[] = await readJobs();
   return (
-    <div className="min-h-screen px-6 py-10 max-w-5xl mx-auto">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 px-6 py-10 max-w-5xl mx-auto">
       <header className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8">
         <div>
-          <h1 className="text-3xl font-bold">Remote Jobs Brazil</h1>
-          <p className="text-sm text-zinc-600 dark:text-zinc-400">Trabalhos 100% remotos para o Brasil</p>
+          <h1 className="text-4xl font-bold text-gray-800 dark:text-white">Remote Jobs Brazil</h1>
+          <p className="text-sm text-gray-500 dark:text-gray-400">Encontre as melhores vagas 100% remotas no Brasil.</p>
         </div>
         <div className="flex items-center gap-2">
           <Link
-            href="/admin"
-            className="inline-flex items-center justify-center rounded-md border border-zinc-300 dark:border-zinc-700 px-3 py-2 text-sm hover:bg-zinc-100 dark:hover:bg-zinc-900"
-          >
-            Admin
-          </Link>
-          <Link
-            href="/import"
-            className="inline-flex items-center justify-center rounded-md border border-zinc-300 dark:border-zinc-700 px-3 py-2 text-sm hover:bg-zinc-100 dark:hover:bg-zinc-900"
-          >
-            Import
-          </Link>
-          <Link
             href="/post"
-            className="inline-flex items-center justify-center rounded-md bg-black text-white dark:bg-white dark:text-black px-4 py-2 text-sm font-medium hover:opacity-90"
+            className="inline-flex items-center justify-center rounded-md bg-blue-600 text-white px-4 py-2 text-sm font-medium hover:bg-blue-700 transition-colors"
           >
-            + Post a Job
+            + Postar Vaga
           </Link>
         </div>
       </header>
 
       {jobs.length === 0 ? (
-        <p className="text-zinc-600">No jobs yet. Be the first to post!</p>
+        <div className="text-center py-12">
+          <p className="text-gray-500">Nenhuma vaga encontrada. Seja o primeiro a postar!</p>
+          <Link
+            href="/post"
+            className="mt-4 inline-flex items-center justify-center rounded-md bg-blue-600 text-white px-4 py-2 text-sm font-medium hover:bg-blue-700 transition-colors"
+          >
+            Postar Vaga
+          </Link>
+        </div>
       ) : (
         <ul className="space-y-4">
           {jobs.map((job) => (
-            <li key={job.id} className="border border-zinc-200 dark:border-zinc-800 rounded-lg p-4">
-              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
-                <Link href={`/jobs/${getSlug(job)}`} className="group">
-                  <h2 className="text-lg font-semibold group-hover:underline">{job.title}</h2>
-                  <p className="text-sm text-zinc-600 dark:text-zinc-400">
-                    {job.company} • {job.location} • {job.type}
+            <li key={job.id} className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-4 transition-all hover:shadow-md hover:border-blue-500">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                <Link href={`/jobs/${getSlug(job)}`} className="group flex-grow">
+                  <h2 className="text-lg font-semibold text-gray-900 dark:text-white group-hover:text-blue-600">{job.title}</h2>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                    {job.company} • <span className="text-green-600 dark:text-green-400">{job.type}</span>
                   </p>
                 </Link>
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-4 flex-shrink-0">
                   {job.salary && (
-                    <span className="text-xs rounded-full bg-zinc-100 dark:bg-zinc-900 px-2 py-1">{job.salary}</span>
+                    <span className="text-xs font-semibold rounded-full bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200 px-3 py-1">{job.salary}</span>
                   )}
                   <a
                     href={job.applyUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-sm underline"
+                    className="inline-flex items-center justify-center rounded-md bg-blue-600 text-white px-4 py-2 text-sm font-medium hover:bg-blue-700 transition-colors"
                   >
-                    Apply →
+                    Apply
                   </a>
                 </div>
               </div>
-              {job.description && (
-                <p className="text-sm mt-2 text-zinc-700 dark:text-zinc-300 line-clamp-3">{job.description}</p>
-              )}
               {job.tags && job.tags.length > 0 && (
-                <div className="mt-2 flex flex-wrap gap-1">
-                  {job.tags.slice(0, 6).map((t) => (
-                    <span key={t} className="text-[10px] uppercase tracking-wide bg-zinc-100 dark:bg-zinc-900 px-2 py-0.5 rounded">
+                <div className="mt-3 flex flex-wrap gap-2">
+                  {job.tags.slice(0, 5).map((t) => (
+                    <span key={t} className="text-xs uppercase tracking-wider bg-blue-50 dark:bg-blue-900/50 text-blue-600 dark:text-blue-300 px-2 py-1 rounded-full">
                       {t}
                     </span>
                   ))}
@@ -78,20 +71,20 @@ export default async function Home() {
         </ul>
       )}
 
-      <section className="mt-10">
-        <h3 className="font-semibold mb-2">Popular searches</h3>
-        <div className="flex flex-wrap gap-2 text-sm">
-          <Link className="underline" href="/remote-react-jobs-brazil">Remote React jobs</Link>
-          <Link className="underline" href="/remote-node-jobs-brazil">Remote Node.js jobs</Link>
-          <Link className="underline" href="/remote-qa-jobs-brazil">Remote QA jobs</Link>
+      <section className="mt-12 rounded-lg bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 p-6">
+        <h3 className="text-lg font-semibold text-gray-800 dark:text-white mb-4">Buscas Populares</h3>
+        <div className="flex flex-wrap gap-3 text-sm">
+          <Link className="text-blue-600 hover:underline dark:text-blue-400" href="/remote-react-jobs-brazil">Vagas React</Link>
+          <Link className="text-blue-600 hover:underline dark:text-blue-400" href="/remote-node-jobs-brazil">Vagas Node.js</Link>
+          <Link className="text-blue-600 hover:underline dark:text-blue-400" href="/remote-qa-jobs-brazil">Vagas QA</Link>
         </div>
       </section>
 
-      <footer className="mt-12 text-xs text-zinc-500 space-x-3">
-        <span>Built with Next.js</span>
-        <a className="underline" href="/feed.xml">RSS</a>
-        <a className="underline" href="/sitemap.xml">Sitemap</a>
-        <a className="underline" href="/robots.txt">Robots</a>
+      <footer className="mt-12 text-center text-xs text-gray-500 dark:text-gray-400 space-x-4">
+        <span>Feito com Next.js & Supabase</span>
+        <a className="hover:underline" href="/feed.xml">RSS</a>
+        <a className="hover:underline" href="/sitemap.xml">Sitemap</a>
+        <a className="hover:underline" href="/admin">Admin</a>
       </footer>
     </div>
   );
