@@ -9,7 +9,7 @@ export function SiteHeader() {
           <Link href="/remote-react-jobs-brazil" className="text-gray-700 hover:underline dark:text-gray-300">React</Link>
           <Link href="/remote-node-jobs-brazil" className="text-gray-700 hover:underline dark:text-gray-300">Node.js</Link>
           <Link href="/remote-qa-jobs-brazil" className="text-gray-700 hover:underline dark:text-gray-300">QA</Link>
-          <Link href="/post" className="inline-flex items-center rounded-md bg-blue-600 text-white px-3 py-1.5 font-medium hover:bg-blue-700">Postar Vaga</Link>
+          <Link href="/post" className="inline-flex items-center rounded-md bg-brand text-white px-3 py-1.5 font-medium hover:bg-brand-700">Postar Vaga</Link>
         </nav>
       </div>
     </header>

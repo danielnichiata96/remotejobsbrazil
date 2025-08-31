@@ -80,7 +80,7 @@ export default async function JobPage({ params }: Props) {
             href={job.applyUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center justify-center rounded-md bg-blue-600 text-white px-5 py-2 text-sm font-medium hover:bg-blue-700"
+            className="inline-flex items-center justify-center rounded-md bg-brand text-white px-5 py-2 text-sm font-medium hover:bg-brand-700"
           >
             Candidatar-se →
           </a>
