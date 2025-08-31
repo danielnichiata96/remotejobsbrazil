@@ -1,5 +1,12 @@
 import { readJobs } from "@/lib/jobs";
 import { JobListItem } from "@/components/JobListItem";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Vagas Remotas de React no Brasil | Remote Jobs Brazil",
+  description: "Encontre oportunidades React 100% remotas para profissionais no Brasil.",
+  alternates: { canonical: "/remote-react-jobs-brazil" },
+};
 
 export const dynamic = "force-dynamic";
 
