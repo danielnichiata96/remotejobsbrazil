@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 
 type FormState =
@@ -11,6 +11,13 @@ type FormState =
 
 export default function PostJobPage() {
   const [state, setState] = useState<FormState>({ status: "idle" });
+  const alertRef = useRef<HTMLParagraphElement | null>(null);
+
+  useEffect(() => {
+    if (state.status === "error" || state.status === "success") {
+      alertRef.current?.focus();
+    }
+  }, [state]);
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -52,7 +59,7 @@ export default function PostJobPage() {
           </p>
         </header>
 
-        <form onSubmit={onSubmit} className="space-y-5 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-6">
+        <form onSubmit={onSubmit} className="space-y-5 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-6" aria-describedby="form-status" aria-live="polite">
           <div className="grid gap-1">
             <label htmlFor="title" className="text-sm font-medium">Título da vaga *</label>
             <input id="title" name="title" required className="border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2 bg-transparent focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Ex: Senior React Developer" />
@@ -103,10 +110,14 @@ export default function PostJobPage() {
           </button>
 
           {state.status === "error" && (
-            <p className="text-sm text-red-600">{state.message}</p>
+            <p id="form-status" ref={alertRef} tabIndex={-1} role="alert" className="text-sm text-red-600">
+              {state.message}
+            </p>
           )}
           {state.status === "success" && (
-            <p className="text-sm text-green-600">Vaga criada! <Link className="underline" href="/">Voltar para vagas</Link></p>
+            <p id="form-status" ref={alertRef} tabIndex={-1} role="status" className="text-sm text-green-600">
+              Vaga criada! <Link className="underline" href="/">Voltar para vagas</Link>
+            </p>
           )}
         </form>
       </div>

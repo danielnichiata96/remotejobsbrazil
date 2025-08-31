@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { readJobs, type Job, getSlug } from "@/lib/jobs";
 import { notFound } from "next/navigation";
+import { TagChip } from "@/components/TagChip";
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -63,12 +64,7 @@ export default async function JobPage({ params }: Props) {
         {job.tags && job.tags.length > 0 && (
           <div className="mt-4 flex flex-wrap gap-2">
             {job.tags.slice(0, 8).map((t) => (
-              <span
-                key={t}
-                className="text-xs uppercase tracking-wider bg-blue-50 dark:bg-blue-900/50 text-blue-700 dark:text-blue-300 px-2 py-1 rounded-full"
-              >
-                {t}
-              </span>
+              <TagChip key={t} label={t} />
             ))}
           </div>
         )}
