@@ -36,38 +36,32 @@ export default async function JobPage({ params }: Props) {
   const jsonLd = jobToJsonLd(job);
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 px-6 py-10">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
-      <div className="max-w-3xl mx-auto">
+    <div className="px-6 py-10">
+      <div className="max-w-3xl mx-auto bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-6">
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
         <nav className="mb-6 text-sm">
           <Link href="/" className="text-blue-600 hover:underline dark:text-blue-400">
-            ← Voltar para vagas
+            ← Voltar
           </Link>
         </nav>
-
-        <header className="mb-6">
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white">{job.title}</h1>
-          <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
-            <span className="font-medium text-gray-800 dark:text-gray-200">{job.company}</span>
-            {job.location && <> • {job.location}</>}
-            {job.type && (
-              <>
-                {" "}• <span className="text-green-600 dark:text-green-400">{job.type}</span>
-              </>
-            )}
-          </p>
-          {job.salary && (
-            <p className="mt-2 inline-flex items-center gap-2 text-sm text-gray-700 dark:text-gray-300">
-              <span className="rounded-full bg-gray-100 dark:bg-gray-700 px-2 py-1">{job.salary}</span>
-            </p>
+        <h1 className="text-3xl font-bold text-gray-900 dark:text-white">{job.title}</h1>
+        <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
+          <span className="font-medium text-gray-800 dark:text-gray-200">{job.company}</span>
+          {job.location && <> • {job.location}</>}
+          {job.type && (
+            <> • <span className="text-green-600 dark:text-green-400">{job.type}</span></>
           )}
-        </header>
-
+        </p>
+        {job.salary && (
+          <p className="mt-3 inline-flex items-center gap-2 text-sm text-gray-700 dark:text-gray-300">
+            <span className="rounded-full bg-gray-100 dark:bg-gray-700 px-2 py-1">{job.salary}</span>
+          </p>
+        )}
         {job.tags && job.tags.length > 0 && (
-          <div className="mb-4 flex flex-wrap gap-2">
+          <div className="mt-4 flex flex-wrap gap-2">
             {job.tags.slice(0, 8).map((t) => (
               <span
                 key={t}
@@ -78,23 +72,21 @@ export default async function JobPage({ params }: Props) {
             ))}
           </div>
         )}
-
         {job.description && (
-          <article className="prose dark:prose-invert prose-headings:scroll-mt-24 prose-a:text-blue-600 dark:prose-a:text-blue-400 mt-6">
-            <pre className="whitespace-pre-wrap font-sans text-base leading-7 text-gray-800 dark:text-gray-200">
+          <article className="prose dark:prose-invert mt-6">
+            <pre className="whitespace-pre-wrap font-sans text-base leading-7">
               {job.description}
             </pre>
           </article>
         )}
-
         <div className="mt-8">
           <a
             href={job.applyUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center justify-center rounded-md bg-blue-600 text-white px-5 py-2 text-sm font-medium hover:bg-blue-700 transition-colors"
+            className="inline-flex items-center justify-center rounded-md bg-blue-600 text-white px-5 py-2 text-sm font-medium hover:bg-blue-700"
           >
-            Candidatar-se no site da empresa →
+            Candidatar-se →
           </a>
         </div>
       </div>
