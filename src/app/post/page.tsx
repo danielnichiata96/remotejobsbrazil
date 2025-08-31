@@ -29,6 +29,7 @@ export default function PostJobPage() {
           salary: data.salary || undefined,
           applyUrl: data.applyUrl,
           description: data.description || undefined,
+          tags: data.tags || undefined,
         }),
       });
       const json = await res.json();
@@ -85,6 +86,11 @@ export default function PostJobPage() {
         <div className="grid gap-1">
           <label htmlFor="description" className="text-sm font-medium">Description</label>
           <textarea id="description" name="description" rows={6} className="border rounded-md px-3 py-2 bg-transparent" placeholder="Key responsibilities, requirements, benefits..." />
+        </div>
+
+        <div className="grid gap-1">
+          <label htmlFor="tags" className="text-sm font-medium">Tags (comma-separated)</label>
+          <input id="tags" name="tags" className="border rounded-md px-3 py-2 bg-transparent" placeholder="react, node, aws" />
         </div>
 
         <button

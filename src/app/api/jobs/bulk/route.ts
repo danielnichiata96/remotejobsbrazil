@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { createJob, readJobs, validateJob, writeJobs, type Job } from "@/lib/jobs";
+import { getSupabase } from "@/lib/supabase";
 
 type BulkBody = {
   jobs: Array<Partial<Job>>;
@@ -31,15 +32,36 @@ export async function POST(req: Request) {
     created.push(job);
   });
 
+  // Try DB bulk insert
+  const sb = getSupabase();
+  if (sb && created.length) {
+    const payload = created.map((j) => ({
+      id: j.id,
+      title: j.title,
+      company: j.company,
+      location: j.location,
+      type: j.type ?? null,
+      salary: j.salary ?? null,
+      apply_url: j.applyUrl,
+      description: j.description ?? null,
+      created_at: j.createdAt,
+      slug: j.slug ?? null,
+      tags: j.tags ?? null,
+    }));
+    const { error } = await sb.from("jobs").upsert(payload, { onConflict: "id" });
+    if (!error) {
+      return NextResponse.json(
+        { created: created.map((j) => j.id), errors },
+        { status: created.length ? 201 : 400 }
+      );
+    }
+  }
+
+  // Fallback to JSON
   const updated = [...created, ...existing];
   const res = await writeJobs(updated);
-
   return NextResponse.json(
-    {
-      created: created.map((j) => j.id),
-      errors,
-      warning: res.ok ? undefined : `Persistence warning: ${res.error}`,
-    },
-    { status: created.length > 0 ? 201 : 400 }
+    { created: created.map((j) => j.id), errors, warning: res.ok ? undefined : `Persistence warning: ${res.error}` },
+    { status: created.length ? 201 : 400 }
   );
 }
