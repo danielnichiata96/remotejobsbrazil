@@ -20,12 +20,40 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const title = `${job.title} — ${job.company} (Remote in Brazil)`;
   const description = job.description?.slice(0, 160) || `${job.company} hiring ${job.title}.`;
   const url = siteUrl(`/jobs/${getSlug(job)}`);
+  
+  // Generate OG image URL with job details
+  const ogImageUrl = `/api/og?${new URLSearchParams({
+    title: job.title,
+    company: job.company,
+    location: job.location || 'Brazil (Remote)',
+    type: job.type || 'Full-time',
+    ...(job.salary && { salary: job.salary }),
+  }).toString()}`;
+  
   return {
     title,
     description,
     alternates: { canonical: url },
-    openGraph: { title, description, url, type: "article" },
-    twitter: { card: "summary", title, description },
+    openGraph: { 
+      title, 
+      description, 
+      url, 
+      type: "article",
+      images: [
+        {
+          url: ogImageUrl,
+          width: 1200,
+          height: 630,
+          alt: `${job.title} at ${job.company} - Remote job in Brazil`,
+        },
+      ],
+    },
+    twitter: { 
+      card: "summary_large_image", 
+      title, 
+      description,
+      images: [ogImageUrl],
+    },
   };
 }
 

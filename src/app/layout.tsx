@@ -27,11 +27,20 @@ export const metadata: Metadata = {
     alternateLocale: "pt_BR",
     siteName: "Remote Jobs Brazil",
     url: "/",
+    images: [
+      {
+        url: "/api/og",
+        width: 1200,
+        height: 630,
+        alt: "Remote Jobs Brazil - 100% remote opportunities for Brazilian developers",
+      },
+    ],
   },
   twitter: {
-    card: "summary",
+    card: "summary_large_image",
     title: "Remote Jobs Brazil 🇧🇷",
     description: "100% remote jobs for Brazil",
+    images: ["/api/og"],
   },
   robots: {
     index: true,
