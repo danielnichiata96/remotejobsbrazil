@@ -5,7 +5,8 @@ export function Card({ className, ...props }: React.HTMLAttributes<HTMLDivElemen
   return (
     <div
       className={cn(
-        "rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 shadow-sm",
+    "rounded-lg border shadow-sm",
+    "bg-[var(--color-surface)] border-[var(--color-border)]",
         className
       )}
       {...props}
@@ -14,7 +15,7 @@ export function Card({ className, ...props }: React.HTMLAttributes<HTMLDivElemen
 }
 
 export function CardHeader({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) {
-  return <div className={cn("p-4 border-b border-gray-200 dark:border-gray-700", className)} {...props} />;
+  return <div className={cn("p-4 border-b border-[var(--color-border)]", className)} {...props} />;
 }
 
 export function CardContent({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) {

@@ -27,24 +27,24 @@ export default function EmployersForm() {
   }
 
   return (
-    <form onSubmit={onSubmit} className="mt-6 space-y-4 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-6">
+    <form onSubmit={onSubmit} className="mt-6 space-y-4 bg-[var(--color-surface)] border border-[var(--color-border)] rounded-lg p-6">
       <div className="grid gap-1">
-        <label htmlFor="name" className="text-sm font-medium">Seu nome</label>
-        <input id="name" name="name" className="border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2 bg-transparent" />
+        <label htmlFor="name" className="text-sm font-medium text-[var(--color-foreground)]">Seu nome</label>
+        <input id="name" name="name" className="border border-[var(--color-border)] rounded-md px-3 py-2 bg-transparent" />
       </div>
       <div className="grid gap-1">
-        <label htmlFor="email" className="text-sm font-medium">E-mail (obrigatório)</label>
-        <input id="email" name="email" type="email" required className="border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2 bg-transparent" />
+        <label htmlFor="email" className="text-sm font-medium text-[var(--color-foreground)]">E-mail (obrigatório)</label>
+        <input id="email" name="email" type="email" required className="border border-[var(--color-border)] rounded-md px-3 py-2 bg-transparent" />
       </div>
       <div className="grid gap-1">
-        <label htmlFor="company" className="text-sm font-medium">Empresa</label>
-        <input id="company" name="company" className="border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2 bg-transparent" />
+        <label htmlFor="company" className="text-sm font-medium text-[var(--color-foreground)]">Empresa</label>
+        <input id="company" name="company" className="border border-[var(--color-border)] rounded-md px-3 py-2 bg-transparent" />
       </div>
       <div className="grid gap-1">
-        <label htmlFor="message" className="text-sm font-medium">Descrição da necessidade</label>
-        <textarea id="message" name="message" rows={5} className="border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2 bg-transparent" placeholder="Stack, nível, prazos, orçamento..." />
+        <label htmlFor="message" className="text-sm font-medium text-[var(--color-foreground)]">Descrição da necessidade</label>
+        <textarea id="message" name="message" rows={5} className="border border-[var(--color-border)] rounded-md px-3 py-2 bg-transparent" placeholder="Stack, nível, prazos, orçamento..." />
       </div>
-      <button type="submit" className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2.5 rounded-md">
+      <button type="submit" className="w-full bg-[var(--color-accent)] hover:brightness-95 text-[var(--color-accent-foreground)] font-medium py-2.5 rounded-md">
         Solicitar publicação/parceria
       </button>
       {status === "ok" && <p className="text-green-600 text-sm">Recebido! Entraremos em contato.</p>}

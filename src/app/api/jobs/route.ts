@@ -1,25 +1,31 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { createJob, readJobs, writeJobs, type Job, normalizeTags } from "@/lib/jobs";
 import { JobInputSchema } from "@/lib/schema";
 import { cookies } from "next/headers";
 import { ADMIN_COOKIE, verifyAdminToken } from "@/lib/auth";
 import { getSupabase } from "@/lib/supabase";
+import { logApiCall } from "@/lib/error-handling";
+import { revalidateJobs } from "@/lib/cache";
 
-export async function GET() {
+export async function GET(request: NextRequest) {
   const jobs = await readJobs();
   
-  return NextResponse.json(
+  const response = NextResponse.json(
     { jobs },
     {
       headers: {
-        'Cache-Control': 'public, max-age=300, s-maxage=600', // 5 min browser, 10 min CDN
+        'Cache-Control': 'public, max-age=300, s-maxage=600, stale-while-revalidate=86400', // Enhanced caching
         'Content-Type': 'application/json',
+        'CDN-Cache-Control': 'public, max-age=600', // Vercel Edge Cache
       },
     }
   );
+
+  logApiCall(request, response);
+  return response;
 }
 
-export async function POST(request: Request) {
+export async function POST(request: NextRequest) {
   try {
     // Support both JSON and form submissions
     let data: Partial<Job> = {};
@@ -109,6 +115,8 @@ export async function POST(request: Request) {
         tags: job.tags ?? null,
       });
       if (!error) {
+        // Revalidate cache after successful job creation
+        await revalidateJobs();
         return NextResponse.json({ job }, { status: 201 });
       }
     }
@@ -123,9 +131,32 @@ export async function POST(request: Request) {
         { status: 201 }
       );
     }
+    
+    // Revalidate cache after successful job creation
+    await revalidateJobs();
     return NextResponse.json({ job }, { status: 201 });
-  } catch (e: unknown) {
-    const message = e instanceof Error ? e.message : "Invalid JSON";
-    return NextResponse.json({ error: message }, { status: 400 });
+  } catch (error) {
+    console.error('Job creation error:', error);
+    
+    // Track error in Sentry
+    const Sentry = await import('@sentry/nextjs');
+    Sentry.withScope((scope) => {
+      scope.setTag('api', true);
+      scope.setContext('request', {
+        url: request.url,
+        method: request.method,
+      });
+      Sentry.captureException(error);
+    });
+
+    const errorMessage = error instanceof Error ? error.message : 'Internal Server Error';
+    return NextResponse.json(
+      { 
+        error: errorMessage,
+        code: 'JOB_CREATION_ERROR',
+        timestamp: new Date().toISOString(),
+      },
+      { status: 500 }
+    );
   }
 }

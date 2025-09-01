@@ -15,31 +15,31 @@ export const metadata: Metadata = {
 
 export default function EmployersPage() {
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 px-6 py-10">
+    <div className="min-h-screen bg-background text-foreground px-6 py-10">
       <div className="max-w-3xl mx-auto">
-        <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Para Empresas</h1>
-        <p className="text-sm text-gray-600 dark:text-gray-400 mt-2">
+        <h1 className="text-3xl font-bold">Para Empresas</h1>
+        <p className="text-sm text-foreground/70 mt-2">
           Contrate talentos brasileiros remotos. Publicação rápida, curadoria e distribuição.
         </p>
 
         <div className="mt-6 grid gap-6 md:grid-cols-3">
-          <div className="rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 p-4">
+          <div className="rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] p-4">
             <p className="text-sm font-medium">Curadoria</p>
-            <p className="text-xs text-gray-600 dark:text-gray-400">Revisão manual e destaque.</p>
+            <p className="text-xs text-foreground/70">Revisão manual e destaque.</p>
           </div>
-          <div className="rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 p-4">
+          <div className="rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] p-4">
             <p className="text-sm font-medium">Distribuição</p>
-            <p className="text-xs text-gray-600 dark:text-gray-400">Comunidades e redes sociais.</p>
+            <p className="text-xs text-foreground/70">Comunidades e redes sociais.</p>
           </div>
-          <div className="rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 p-4">
+          <div className="rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] p-4">
             <p className="text-sm font-medium">Rapidez</p>
-            <p className="text-xs text-gray-600 dark:text-gray-400">Resposta em até 24h.</p>
+            <p className="text-xs text-foreground/70">Resposta em até 24h.</p>
           </div>
         </div>
 
   <EmployersForm />
       </div>
-    </div>
+  </div>
   );
 }
  

@@ -15,7 +15,7 @@ async function isAuthed() {
 export default async function AdminPage() {
   const authed = await isAuthed();
   return (
-    <div className="min-h-screen px-6 py-10 max-w-2xl mx-auto space-y-6">
+  <div className="min-h-screen px-6 py-10 max-w-2xl mx-auto space-y-6">
       <header className="flex items-center justify-between">
         <h1 className="text-2xl font-bold">Admin</h1>
         <Link href="/" className="underline text-sm">Back</Link>
@@ -30,7 +30,7 @@ function LoginCard() {
   return (
     <Card>
       <CardHeader>
-        <p className="text-sm text-zinc-600 dark:text-zinc-400">Enter the admin key to access the dashboard.</p>
+  <p className="text-sm text-foreground/70">Enter the admin key to access the dashboard.</p>
       </CardHeader>
       <CardContent>
         <form action="/api/admin/login" method="post" className="space-y-3">
@@ -95,7 +95,7 @@ function ManualJobForm() {
           </div>
           <div className="grid gap-1">
             <Label htmlFor="description">Description</Label>
-            <textarea id="description" name="description" rows={6} className="border border-gray-300 dark:border-gray-700 rounded-md px-3 py-2 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+            <textarea id="description" name="description" rows={6} className="border border-[var(--color-border)] rounded-md px-3 py-2 bg-[var(--color-surface)] text-[var(--color-foreground)] placeholder-[var(--color-muted-foreground)]/80 focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]" />
           </div>
           <div className="grid gap-1">
             <Label htmlFor="tags">Tags (comma-separated)</Label>

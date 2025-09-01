@@ -6,7 +6,7 @@ export function Table({ className, ...props }: React.TableHTMLAttributes<HTMLTab
 }
 
 export function Thead({ className, ...props }: React.HTMLAttributes<HTMLTableSectionElement>) {
-  return <thead className={cn("bg-gray-50 dark:bg-gray-800 sticky top-0 z-10", className)} {...props} />;
+  return <thead className={cn("sticky top-0 z-10 bg-[var(--color-muted)]", className)} {...props} />;
 }
 
 export function Trow(props: React.HTMLAttributes<HTMLTableRowElement>) {
@@ -14,11 +14,11 @@ export function Trow(props: React.HTMLAttributes<HTMLTableRowElement>) {
 }
 
 export function Th({ className, ...props }: React.ThHTMLAttributes<HTMLTableCellElement>) {
-  return <th className={cn("text-left p-2 border-b", className)} {...props} />;
+  return <th className={cn("text-left p-2 border-b border-[var(--color-border)]", className)} {...props} />;
 }
 
 export function Td({ className, ...props }: React.TdHTMLAttributes<HTMLTableCellElement>) {
-  return <td className={cn("align-top p-2 border-b", className)} {...props} />;
+  return <td className={cn("align-top p-2 border-b border-[var(--color-border)]", className)} {...props} />;
 }
 
 export function Tbody(props: React.HTMLAttributes<HTMLTableSectionElement>) {

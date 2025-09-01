@@ -17,7 +17,7 @@ async function isAuthed() {
 
 async function fetchLeads() {
   const sb = getServiceSupabase();
-  if (!sb) return { data: [] as any[], error: "Service role not configured" };
+  if (!sb) return { data: [], error: "Service role not configured" };
   const { data, error } = await sb
     .from("leads")
     .select("id,name,email,company,message,created_at")
@@ -58,7 +58,7 @@ export default async function AdminLeadsPage() {
             <p className="text-red-600 text-sm">Erro ao carregar: {error}</p>
           </CardHeader>
           <CardContent className="flex items-center justify-between">
-            <p className="text-sm text-gray-600 dark:text-gray-400">Verifique as variáveis SUPABASE_URL e SUPABASE_SERVICE_ROLE no ambiente.</p>
+            <p className="text-sm text-foreground/70">Verifique as variáveis SUPABASE_URL e SUPABASE_SERVICE_ROLE no ambiente.</p>
             <Button variant="secondary" size="sm" onClick={() => {}}>
               <a href="/admin/leads">Tentar novamente</a>
             </Button>
@@ -74,7 +74,7 @@ export default async function AdminLeadsPage() {
           </div>
         </CardHeader>
         <CardContent className="overflow-x-auto">
-          <Table className="border border-gray-200 dark:border-gray-700">
+          <Table className="border border-[var(--color-border)]">
             <Thead>
               <Trow>
                 <Th>Data</Th>
@@ -86,7 +86,7 @@ export default async function AdminLeadsPage() {
             </Thead>
             <Tbody>
               {data.map((l) => (
-                <Trow key={l.id} className="odd:bg-white even:bg-gray-50 dark:odd:bg-gray-900 dark:even:bg-gray-800">
+                <Trow key={l.id} className="odd:bg-[var(--color-surface)] even:bg-[var(--color-muted)]">
                   <Td className="whitespace-nowrap">{new Date(l.created_at).toLocaleString()}</Td>
                   <Td>{l.name || "—"}</Td>
                   <Td>{l.email}</Td>
@@ -96,7 +96,7 @@ export default async function AdminLeadsPage() {
               ))}
               {data.length === 0 && !error && (
                 <Trow>
-                  <Td colSpan={5} className="p-4 text-center text-gray-500">Nenhum lead encontrado.</Td>
+                  <Td colSpan={5} className="p-4 text-center text-foreground/70">Nenhum lead encontrado.</Td>
                 </Trow>
               )}
             </Tbody>

@@ -48,7 +48,7 @@ export default function ImportPage() {
   }
 
   return (
-    <div className="min-h-screen px-6 py-10 max-w-3xl mx-auto">
+  <div className="min-h-screen px-6 py-10 max-w-3xl mx-auto">
       <header className="mb-6 flex items-center justify-between">
         <h1 className="text-2xl font-bold">Import Jobs</h1>
         <Link className="underline text-sm" href="/">Back</Link>
@@ -59,7 +59,7 @@ export default function ImportPage() {
       </p>
 
       <textarea
-        className="w-full border rounded-md p-3 bg-transparent min-h-64"
+        className="w-full border rounded-md p-3 bg-transparent min-h-64 border-[var(--color-border)] text-foreground"
         placeholder='[{"title":"...","company":"...","applyUrl":"https://..."}] or one per line'
         value={input}
         onChange={(e) => setInput(e.target.value)}
@@ -69,7 +69,7 @@ export default function ImportPage() {
         <button
           onClick={onImport}
           disabled={busy}
-          className="inline-flex items-center justify-center rounded-md bg-black text-white dark:bg-white dark:text-black px-4 py-2 text-sm font-medium hover:opacity-90 disabled:opacity-50"
+          className="inline-flex items-center justify-center rounded-md bg-[var(--color-accent)] text-[var(--color-accent-foreground)] px-4 py-2 text-sm font-medium hover:brightness-95 disabled:opacity-50"
         >
           {busy ? "Importing…" : "Import"}
         </button>

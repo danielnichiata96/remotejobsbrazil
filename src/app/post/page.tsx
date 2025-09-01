@@ -50,61 +50,61 @@ export default function PostJobPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 px-6 py-10">
+    <div className="min-h-screen bg-background text-foreground px-6 py-10">
       <div className="max-w-2xl mx-auto">
         <header className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Postar Vaga</h1>
-          <p className="text-sm text-gray-600 dark:text-gray-400">
+          <h1 className="text-3xl font-bold">Postar Vaga</h1>
+          <p className="text-sm text-foreground/70">
             Compartilhe uma oportunidade 100% remota para candidatos no Brasil.
           </p>
         </header>
 
-        <form onSubmit={onSubmit} className="space-y-5 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-6" aria-describedby="form-status" aria-live="polite">
+        <form onSubmit={onSubmit} className="space-y-5 bg-[var(--color-surface)] border border-[var(--color-border)] rounded-lg p-6" aria-describedby="form-status" aria-live="polite">
           <div className="grid gap-1">
             <label htmlFor="title" className="text-sm font-medium">Título da vaga *</label>
-            <input id="title" name="title" required className="border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2 bg-transparent focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Ex: Senior React Developer" />
+            <input id="title" name="title" required className="border border-[var(--color-border)] rounded-md px-3 py-2 bg-transparent focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]" placeholder="Ex: Senior React Developer" />
           </div>
 
           <div className="grid gap-1">
             <label htmlFor="company" className="text-sm font-medium">Empresa *</label>
-            <input id="company" name="company" required className="border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2 bg-transparent focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Ex: Acme Ltd" />
+            <input id="company" name="company" required className="border border-[var(--color-border)] rounded-md px-3 py-2 bg-transparent focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]" placeholder="Ex: Acme Ltd" />
           </div>
 
           <div className="grid gap-1">
             <label htmlFor="applyUrl" className="text-sm font-medium">URL para aplicar *</label>
-            <input id="applyUrl" name="applyUrl" type="url" required className="border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2 bg-transparent focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="https://..." />
+            <input id="applyUrl" name="applyUrl" type="url" required className="border border-[var(--color-border)] rounded-md px-3 py-2 bg-transparent focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]" placeholder="https://..." />
           </div>
 
           <div className="grid gap-4 sm:grid-cols-2">
             <div className="grid gap-1">
               <label htmlFor="location" className="text-sm font-medium">Local</label>
-              <input id="location" name="location" className="border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2 bg-transparent focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Brazil (Remote)" />
+              <input id="location" name="location" className="border border-[var(--color-border)] rounded-md px-3 py-2 bg-transparent focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]" placeholder="Brazil (Remote)" />
             </div>
             <div className="grid gap-1">
               <label htmlFor="type" className="text-sm font-medium">Tipo</label>
-              <input id="type" name="type" className="border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2 bg-transparent focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Full-time" />
+              <input id="type" name="type" className="border border-[var(--color-border)] rounded-md px-3 py-2 bg-transparent focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]" placeholder="Full-time" />
             </div>
           </div>
 
           <div className="grid gap-1">
             <label htmlFor="salary" className="text-sm font-medium">Salário</label>
-            <input id="salary" name="salary" className="border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2 bg-transparent focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="R$ ..." />
+            <input id="salary" name="salary" className="border border-[var(--color-border)] rounded-md px-3 py-2 bg-transparent focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]" placeholder="R$ ..." />
           </div>
 
           <div className="grid gap-1">
             <label htmlFor="description" className="text-sm font-medium">Descrição</label>
-            <textarea id="description" name="description" rows={6} className="border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2 bg-transparent focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Responsabilidades, requisitos, benefícios..." />
+            <textarea id="description" name="description" rows={6} className="border border-[var(--color-border)] rounded-md px-3 py-2 bg-transparent focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]" placeholder="Responsabilidades, requisitos, benefícios..." />
           </div>
 
           <div className="grid gap-1">
             <label htmlFor="tags" className="text-sm font-medium">Tags (separadas por vírgula)</label>
-            <input id="tags" name="tags" className="border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2 bg-transparent focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="react, node, aws" />
+            <input id="tags" name="tags" className="border border-[var(--color-border)] rounded-md px-3 py-2 bg-transparent focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]" placeholder="react, node, aws" />
           </div>
 
           <button
             type="submit"
             disabled={state.status === "submitting"}
-            className="inline-flex items-center justify-center rounded-md bg-brand text-white px-4 py-2 text-sm font-medium hover:bg-brand-700 disabled:opacity-50"
+            className="inline-flex items-center justify-center rounded-md bg-[var(--color-primary)] text-[var(--color-primary-foreground)] px-4 py-2 text-sm font-medium hover:brightness-95 disabled:opacity-50"
           >
             {state.status === "submitting" ? "Publicando…" : "Publicar vaga"}
           </button>

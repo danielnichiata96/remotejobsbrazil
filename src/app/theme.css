@@ -1,0 +1,12 @@
+/* Utility layer mapping CSS variables to Tailwind-friendly classes */
+/* Use with className like bg-background, text-foreground, border-border */
+
+:root {
+  --background: var(--color-background);
+  --foreground: var(--color-foreground);
+  --border: var(--color-border);
+}
+
+.bg-background { background-color: var(--background); }
+.text-foreground { color: var(--foreground); }
+.border-border { border-color: var(--border); }
