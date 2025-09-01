@@ -53,6 +53,10 @@ function Dashboard() {
         <button className="underline text-sm" type="submit">Logout</button>
       </form>
 
+      <div>
+        <a href="/admin/leads" className="underline text-sm">Ver Leads</a>
+      </div>
+
       <h2 className="text-lg font-semibold">Add Job (manual)</h2>
       <ManualJobForm />
     </div>
