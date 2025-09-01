@@ -1,6 +1,10 @@
 import { cookies } from "next/headers";
 import { ADMIN_COOKIE, verifyAdminToken } from "@/lib/auth";
 import Link from "next/link";
+import { Card, CardContent, CardHeader } from "@/components/ui/Card";
+import { Input } from "@/components/ui/Input";
+import { Label } from "@/components/ui/Label";
+import { Button } from "@/components/ui/Button";
 
 async function isAuthed() {
   const c = await cookies();
@@ -24,25 +28,20 @@ export default async function AdminPage() {
 
 function LoginCard() {
   return (
-    <form
-      action="/api/admin/login"
-      method="post"
-      className="border rounded-lg p-4 space-y-3"
-    >
-      <p className="text-sm text-zinc-600 dark:text-zinc-400">
-        Enter the admin key to access the dashboard.
-      </p>
-      <input
-        name="key"
-        type="password"
-        required
-        className="border rounded-md px-3 py-2 bg-transparent w-full"
-        placeholder="Admin key"
-      />
-      <button className="inline-flex items-center justify-center rounded-md bg-black text-white dark:bg-white dark:text-black px-4 py-2 text-sm font-medium">
-        Login
-      </button>
-    </form>
+    <Card>
+      <CardHeader>
+        <p className="text-sm text-zinc-600 dark:text-zinc-400">Enter the admin key to access the dashboard.</p>
+      </CardHeader>
+      <CardContent>
+        <form action="/api/admin/login" method="post" className="space-y-3">
+          <div className="grid gap-1">
+            <Label htmlFor="admin-key">Admin key</Label>
+            <Input id="admin-key" name="key" type="password" required placeholder="Admin key" />
+          </div>
+          <Button type="submit">Login</Button>
+        </form>
+      </CardContent>
+    </Card>
   );
 }
 
@@ -50,7 +49,7 @@ function Dashboard() {
   return (
     <div className="space-y-6">
       <form action="/api/admin/logout" method="post">
-        <button className="underline text-sm" type="submit">Logout</button>
+        <Button type="submit" variant="ghost" className="underline px-0">Logout</Button>
       </form>
 
       <div>
@@ -65,49 +64,47 @@ function Dashboard() {
 
 function ManualJobForm() {
   return (
-    <form
-      className="space-y-3 border rounded-lg p-4"
-      action="/api/jobs"
-      method="post"
-    >
-      <div className="grid gap-1">
-        <label className="text-sm font-medium">Title *</label>
-        <input name="title" required className="border rounded-md px-3 py-2 bg-transparent" />
-      </div>
-      <div className="grid gap-1">
-        <label className="text-sm font-medium">Company *</label>
-        <input name="company" required className="border rounded-md px-3 py-2 bg-transparent" />
-      </div>
-      <div className="grid gap-1">
-        <label className="text-sm font-medium">Apply URL *</label>
-        <input name="applyUrl" type="url" required className="border rounded-md px-3 py-2 bg-transparent" />
-      </div>
-      <div className="grid gap-1 sm:grid-cols-2">
-        <div className="grid gap-1">
-          <label className="text-sm font-medium">Location</label>
-          <input name="location" className="border rounded-md px-3 py-2 bg-transparent" placeholder="Brazil (Remote)" />
-        </div>
-        <div className="grid gap-1">
-          <label className="text-sm font-medium">Type</label>
-          <input name="type" className="border rounded-md px-3 py-2 bg-transparent" placeholder="Full-time" />
-        </div>
-      </div>
-      <div className="grid gap-1">
-        <label className="text-sm font-medium">Salary</label>
-        <input name="salary" className="border rounded-md px-3 py-2 bg-transparent" placeholder="R$ ..." />
-      </div>
-      <div className="grid gap-1">
-        <label className="text-sm font-medium">Description</label>
-        <textarea name="description" rows={6} className="border rounded-md px-3 py-2 bg-transparent" />
-      </div>
-      <div className="grid gap-1">
-        <label className="text-sm font-medium">Tags (comma-separated)</label>
-        <input name="tags" className="border rounded-md px-3 py-2 bg-transparent" placeholder="react, node, aws" />
-      </div>
-      <button className="inline-flex items-center justify-center rounded-md bg-black text-white dark:bg-white dark:text-black px-4 py-2 text-sm font-medium">
-        Create
-      </button>
-      <p className="text-xs text-zinc-500">After submit, go to the homepage to see it.</p>
-    </form>
+    <Card>
+      <CardContent>
+        <form className="space-y-4" action="/api/jobs" method="post">
+          <div className="grid gap-1">
+            <Label htmlFor="title">Title *</Label>
+            <Input id="title" name="title" required />
+          </div>
+          <div className="grid gap-1">
+            <Label htmlFor="company">Company *</Label>
+            <Input id="company" name="company" required />
+          </div>
+          <div className="grid gap-1">
+            <Label htmlFor="applyUrl">Apply URL *</Label>
+            <Input id="applyUrl" name="applyUrl" type="url" required />
+          </div>
+          <div className="grid gap-1 sm:grid-cols-2">
+            <div className="grid gap-1">
+              <Label htmlFor="location">Location</Label>
+              <Input id="location" name="location" placeholder="Brazil (Remote)" />
+            </div>
+            <div className="grid gap-1">
+              <Label htmlFor="type">Type</Label>
+              <Input id="type" name="type" placeholder="Full-time" />
+            </div>
+          </div>
+          <div className="grid gap-1">
+            <Label htmlFor="salary">Salary</Label>
+            <Input id="salary" name="salary" placeholder="R$ ..." />
+          </div>
+          <div className="grid gap-1">
+            <Label htmlFor="description">Description</Label>
+            <textarea id="description" name="description" rows={6} className="border border-gray-300 dark:border-gray-700 rounded-md px-3 py-2 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+          </div>
+          <div className="grid gap-1">
+            <Label htmlFor="tags">Tags (comma-separated)</Label>
+            <Input id="tags" name="tags" placeholder="react, node, aws" />
+          </div>
+          <Button type="submit">Create</Button>
+          <p className="text-xs text-zinc-500">After submit, go to the homepage to see it.</p>
+        </form>
+      </CardContent>
+    </Card>
   );
 }
