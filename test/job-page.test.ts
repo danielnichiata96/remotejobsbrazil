@@ -37,12 +37,12 @@ vi.mock("@/lib/jobs", async (og) => {
 const loadPage = () => import("@/app/jobs/[slug]/page");
 
 describe("/jobs/[slug] page", () => {
-  it("renderiza título e CTA Candidatar-se", async () => {
+  it("renders title and Apply CTA", async () => {
     const mod = await loadPage();
     const Page = mod.default as (args: { params: Promise<{ slug: string }> }) => Promise<React.ReactElement>;
     const element = await Page({ params: Promise.resolve({ slug: fixtureJob.slug! }) });
     const html = renderToString(element);
     expect(html).toContain(fixtureJob.title);
-    expect(html).toContain("Candidatar-se");
+    expect(html).toContain("Apply");
   });
 });

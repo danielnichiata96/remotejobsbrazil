@@ -35,14 +35,14 @@ vi.mock("@/lib/jobs", async (og) => {
 const loadPage = () => import("@/app/page");
 
 describe("homepage", () => {
-  it("renderiza estado vazio", async () => {
+  it("renders empty state in English", async () => {
     const mod = await loadPage();
     const Page = mod.default as () => Promise<React.ReactElement>;
     const html = renderToString(await Page());
-    expect(html).toContain("Nenhuma vaga");
+    expect(html).toContain("No jobs found");
   });
 
-  it("lista vagas quando presentes", async () => {
+  it("lists jobs when present", async () => {
     const jobsMod = await import("@/lib/jobs");
     (jobsMod.readJobs as unknown as { mockResolvedValueOnce: (v: unknown) => void }).mockResolvedValueOnce(
       sampleJobs
