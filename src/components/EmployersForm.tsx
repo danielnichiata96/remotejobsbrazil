@@ -17,14 +17,14 @@ export default function EmployersForm() {
     try {
       setErrorMsg("");
       setStatus("submitting");
-      const res = await fetch("/api/leads", {
+      const res = await fetch("/api/contact", {
         method: "POST",
         headers: { "content-type": "application/json" },
         body: JSON.stringify(payload),
       });
       if (!res.ok) {
         const text = await res.text().catch(() => "");
-        console.error("/api/leads failed", res.status, text);
+        console.error("/api/contact failed", res.status, text);
         try {
           const data = JSON.parse(text);
           setErrorMsg(typeof data.error === "string" ? data.error : "Erro ao enviar");
