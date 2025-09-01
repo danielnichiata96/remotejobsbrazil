@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
-import { getSupabase } from "@/lib/supabase";
+import { getServiceSupabase } from "@/lib/supabase";
 import { writeLead } from "@/lib/leads";
+
+export const runtime = "nodejs";
 
 export async function POST(req: Request) {
   try {
@@ -11,8 +13,8 @@ export async function POST(req: Request) {
     const message = typeof json.message === "string" ? json.message : null;
     if (!email) return NextResponse.json({ error: "Email required" }, { status: 400 });
 
-    const sb = getSupabase();
-    if (sb) {
+  const sb = getServiceSupabase();
+  if (sb) {
       const { error } = await sb.from("leads").insert({ name, email, company, message });
       if (!error) return NextResponse.json({ ok: true }, { status: 201 });
       // If DB failed, continue to file fallback

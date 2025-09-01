@@ -1,6 +1,9 @@
 import { NextResponse } from "next/server";
-import { getSupabase } from "@/lib/supabase";
+import { getServiceSupabase } from "@/lib/supabase";
 import { writeLead } from "@/lib/leads";
+
+// Ensure this runs on Node.js runtime (not Edge) because it uses service role
+export const runtime = "nodejs";
 
 export async function POST(req: Request) {
   try {
@@ -11,7 +14,7 @@ export async function POST(req: Request) {
     const message = typeof json.message === "string" ? json.message : null;
     if (!email) return NextResponse.json({ error: "Email required" }, { status: 400 });
 
-    const sb = getSupabase();
+    const sb = getServiceSupabase();
     if (sb) {
       const { error } = await sb.from("leads").insert({ name, email, company, message });
       if (!error) return NextResponse.json({ ok: true }, { status: 201 });

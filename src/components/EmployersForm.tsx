@@ -24,7 +24,6 @@ export default function EmployersForm() {
       });
       if (!res.ok) {
         const text = await res.text().catch(() => "");
-        console.error("/api/contact failed", res.status, text);
         try {
           const data = JSON.parse(text);
           setErrorMsg(typeof data.error === "string" ? data.error : "Erro ao enviar");
@@ -38,7 +37,7 @@ export default function EmployersForm() {
       setStatus("ok");
     } catch {
       setStatus("error");
-      setErrorMsg("Falha de rede");
+      setErrorMsg("Não foi possível enviar. Verifique sua conexão e tente novamente.");
     }
   }
 
