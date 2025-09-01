@@ -63,7 +63,7 @@ export default async function Home() {
                         {job.salary && (
                           <span className="text-xs font-medium rounded-full bg-slate-100 text-slate-700 px-3 py-1">{job.salary}</span>
                         )}
-                        <a href={job.applyUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center rounded-md bg-slate-900 text-white px-3 py-1.5 text-sm hover:bg-slate-700">Apply</a>
+                        <a href={job.applyUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center rounded-md bg-slate-900 text-white px-3 py-1.5 text-sm hover:bg-slate-700">Candidatar-se</a>
                       </div>
                     </div>
                     {job.tags && job.tags.length > 0 && (

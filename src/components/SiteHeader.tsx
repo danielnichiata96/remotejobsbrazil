@@ -9,6 +9,7 @@ export function SiteHeader() {
           <Link href="/remote-react-jobs-brazil" className="text-slate-700 hover:underline">React</Link>
           <Link href="/remote-node-jobs-brazil" className="text-slate-700 hover:underline">Node.js</Link>
           <Link href="/remote-qa-jobs-brazil" className="text-slate-700 hover:underline">QA</Link>
+          <Link href="/employers" className="text-slate-700 hover:underline">Para Empresas</Link>
           <Link href="/post" className="inline-flex items-center rounded-md bg-slate-900 text-white px-3 py-1.5 font-medium hover:bg-slate-700">Postar Vaga</Link>
         </nav>
       </div>

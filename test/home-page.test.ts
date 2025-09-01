@@ -2,7 +2,10 @@ import { describe, it, expect, vi } from "vitest";
 import React from "react";
 import { renderToString } from "react-dom/server";
 
-vi.mock("next/link", () => ({ default: (props: any) => React.createElement("a", { href: props.href }, props.children) }));
+vi.mock("next/link", () => ({
+  default: (props: { href: string; children?: React.ReactNode }) =>
+    React.createElement("a", { href: props.href }, props.children),
+}));
 
 const sampleJobs = [
   {
@@ -21,11 +24,11 @@ const sampleJobs = [
 ];
 
 vi.mock("@/lib/jobs", async (og) => {
-  const mod = await og<any>();
+  const mod = await og<typeof import("@/lib/jobs")>();
   return {
     ...mod,
     readJobs: vi.fn(async () => []),
-    getSlug: (j: any) => j.slug ?? "slug",
+    getSlug: (j: { slug?: string }) => j.slug ?? "slug",
   };
 });
 
@@ -41,7 +44,9 @@ describe("homepage", () => {
 
   it("lista vagas quando presentes", async () => {
     const jobsMod = await import("@/lib/jobs");
-    (jobsMod as any).readJobs.mockResolvedValueOnce(sampleJobs);
+    (jobsMod.readJobs as unknown as { mockResolvedValueOnce: (v: unknown) => void }).mockResolvedValueOnce(
+      sampleJobs
+    );
     const mod = await loadPage();
     const Page = mod.default as () => Promise<React.ReactElement>;
     const html = renderToString(await Page());

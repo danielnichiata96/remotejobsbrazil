@@ -6,7 +6,7 @@ vi.mock("next/headers", () => ({ cookies: vi.fn(async () => ({ get: () => undefi
 vi.mock("@/lib/auth", () => ({ ADMIN_COOKIE: "admin", verifyAdminToken: () => true }));
 vi.mock("@/lib/supabase", () => ({ getSupabase: () => undefined }));
 vi.mock("@/lib/jobs", async (og) => {
-  const mod = await og<any>();
+  const mod = await og<typeof import("@/lib/jobs")>();
   return {
     ...mod,
     readJobs: vi.fn(async () => []),
@@ -38,7 +38,7 @@ describe("POST /api/jobs", () => {
       description: "Great role",
       tags: ["react", "node"],
     });
-    const res = await POST(req as any);
+  const res = await POST(req);
     expect(res.status).toBe(201);
     const json = await res.json();
     expect(json.job).toMatchObject({ title: "Senior React Dev", company: "Acme" });
@@ -46,7 +46,7 @@ describe("POST /api/jobs", () => {
 
   it("returns 400 on invalid payload (missing fields)", async () => {
     const req = jsonReq({ company: "Acme" });
-    const res = await POST(req as any);
+  const res = await POST(req);
     expect(res.status).toBe(400);
     const json = await res.json();
     expect(json.error).toBeTruthy();

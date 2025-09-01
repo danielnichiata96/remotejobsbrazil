@@ -6,6 +6,13 @@ export const metadata: Metadata = {
   title: "Vagas Remotas de QA no Brasil | Remote Jobs Brazil",
   description: "Oportunidades de QA e testes totalmente remotas no Brasil.",
   alternates: { canonical: "/remote-qa-jobs-brazil" },
+  openGraph: {
+    title: "Vagas Remotas de QA no Brasil",
+    description: "Teste de software e QA em vagas 100% remotas.",
+    type: "website",
+    url: "/remote-qa-jobs-brazil",
+  },
+  twitter: { card: "summary", title: "Vagas Remotas de QA no Brasil", description: "Vagas de QA remotas" },
 };
 
 export const dynamic = "force-dynamic";

@@ -105,12 +105,17 @@ function jobToJsonLd(job: Job) {
     description: job.description || job.title,
     datePosted: job.createdAt,
     employmentType: job.type || "Full-time",
-    hiringOrganization: { "@type": "Organization", name: job.company },
+    hiringOrganization: {
+      "@type": "Organization",
+      name: job.company,
+      sameAs: job.applyUrl,
+    },
     jobLocationType: "TELECOMMUTE",
-    applicantLocationRequirements: { "@type": "Country", name: "Brazil" },
+    applicantLocationRequirements: { "@type": "Country", name: "BR" },
     directApply: true,
     validThrough: new Date(Date.now() + 1000 * 60 * 60 * 24 * 60).toISOString(),
     identifier: { "@type": "PropertyValue", value: job.id },
-    hiringOrganizationUrl: job.applyUrl,
+    // Provide a canonical URL for the job posting
+    url: siteUrl(`/jobs/${getSlug(job)}`),
   };
 }

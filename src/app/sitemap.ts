@@ -12,6 +12,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const items: MetadataRoute.Sitemap = [
     { url: siteUrl("/"), lastModified: now, changeFrequency: "daily", priority: 1 },
     { url: siteUrl("/post"), lastModified: now },
+  { url: siteUrl("/employers"), lastModified: now, changeFrequency: "weekly", priority: 0.6 },
+  { url: siteUrl("/remote-react-jobs-brazil"), lastModified: now, changeFrequency: "daily", priority: 0.9 },
+  { url: siteUrl("/remote-node-jobs-brazil"), lastModified: now, changeFrequency: "daily", priority: 0.9 },
+  { url: siteUrl("/remote-qa-jobs-brazil"), lastModified: now, changeFrequency: "daily", priority: 0.9 },
   ];
   for (const j of jobs) {
     items.push({

@@ -19,14 +19,17 @@ const fixtureJob = {
 
 // Mocks necessários para App Router
 vi.mock("next/navigation", () => ({ notFound: () => { throw new Error("NOT_FOUND"); } }));
-vi.mock("next/link", () => ({ default: (props: any) => React.createElement("a", { href: props.href }, props.children) }));
+vi.mock("next/link", () => ({
+  default: (props: { href: string; children?: React.ReactNode }) =>
+    React.createElement("a", { href: props.href }, props.children),
+}));
 
 vi.mock("@/lib/jobs", async (og) => {
-  const mod = await og<any>();
+  const mod = await og<typeof import("@/lib/jobs")>();
   return {
     ...mod,
     readJobs: vi.fn(async () => [fixtureJob]),
-    getSlug: (j: any) => j.slug ?? "slug",
+    getSlug: (j: { slug?: string }) => j.slug ?? "slug",
   };
 });
 

@@ -15,6 +15,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"),
   title: "Remote Jobs Brazil",
   description: "Lean job board for remote roles in Brazil",
   openGraph: {
@@ -24,6 +25,7 @@ export const metadata: Metadata = {
     locale: "pt_BR",
     alternateLocale: "en_US",
     siteName: "Remote Jobs Brazil",
+    url: "/",
   },
   twitter: {
     card: "summary",
@@ -56,6 +58,7 @@ export default function RootLayout({
   return (
     <html lang="pt-BR">
       <head>
+  <link rel="alternate" type="application/atom+xml" href="/feed.xml" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}

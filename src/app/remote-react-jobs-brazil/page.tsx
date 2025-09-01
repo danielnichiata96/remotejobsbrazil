@@ -6,6 +6,13 @@ export const metadata: Metadata = {
   title: "Vagas Remotas de React no Brasil | Remote Jobs Brazil",
   description: "Encontre oportunidades React 100% remotas para profissionais no Brasil.",
   alternates: { canonical: "/remote-react-jobs-brazil" },
+  openGraph: {
+    title: "Vagas Remotas de React no Brasil",
+    description: "As melhores vagas React totalmente remotas para o Brasil.",
+    type: "website",
+    url: "/remote-react-jobs-brazil",
+  },
+  twitter: { card: "summary", title: "Vagas Remotas de React no Brasil", description: "Vagas React remotas" },
 };
 
 export const dynamic = "force-dynamic";

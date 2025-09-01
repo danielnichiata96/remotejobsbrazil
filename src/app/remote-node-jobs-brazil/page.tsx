@@ -6,6 +6,13 @@ export const metadata: Metadata = {
   title: "Vagas Remotas de Node.js no Brasil | Remote Jobs Brazil",
   description: "Vagas backend com Node.js totalmente remotas para profissionais no Brasil.",
   alternates: { canonical: "/remote-node-jobs-brazil" },
+  openGraph: {
+    title: "Vagas Remotas de Node.js no Brasil",
+    description: "Trabalhos Node.js remotos para profissionais no Brasil.",
+    type: "website",
+    url: "/remote-node-jobs-brazil",
+  },
+  twitter: { card: "summary", title: "Vagas Remotas de Node.js no Brasil", description: "Vagas Node remotas" },
 };
 
 export const dynamic = "force-dynamic";
