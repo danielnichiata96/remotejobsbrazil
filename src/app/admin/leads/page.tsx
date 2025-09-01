@@ -2,6 +2,10 @@ import { cookies } from "next/headers";
 import Link from "next/link";
 import { ADMIN_COOKIE, verifyAdminToken } from "@/lib/auth";
 import { getServiceSupabase } from "@/lib/supabase";
+import { Card, CardContent, CardHeader } from "@/components/ui/Card";
+import { Table, Tbody, Td, Th, Thead, Trow } from "@/components/ui/Table";
+import { Badge } from "@/components/ui/Badge";
+import { Button } from "@/components/ui/Button";
 
 export const runtime = "nodejs";
 
@@ -49,38 +53,56 @@ export default async function AdminLeadsPage() {
       </header>
 
       {error && (
-        <p className="text-red-600 text-sm">Erro ao carregar: {error}</p>
+        <Card>
+          <CardHeader>
+            <p className="text-red-600 text-sm">Erro ao carregar: {error}</p>
+          </CardHeader>
+          <CardContent className="flex items-center justify-between">
+            <p className="text-sm text-gray-600 dark:text-gray-400">Verifique as variáveis SUPABASE_URL e SUPABASE_SERVICE_ROLE no ambiente.</p>
+            <Button variant="secondary" size="sm" onClick={() => {}}>
+              <a href="/admin/leads">Tentar novamente</a>
+            </Button>
+          </CardContent>
+        </Card>
       )}
 
-      <div className="overflow-x-auto">
-        <table className="min-w-full border border-gray-200 dark:border-gray-700 text-sm">
-          <thead className="bg-gray-50 dark:bg-gray-800">
-            <tr>
-              <th className="text-left p-2 border-b">Data</th>
-              <th className="text-left p-2 border-b">Nome</th>
-              <th className="text-left p-2 border-b">Email</th>
-              <th className="text-left p-2 border-b">Empresa</th>
-              <th className="text-left p-2 border-b">Mensagem</th>
-            </tr>
-          </thead>
-          <tbody>
-            {data.map((l) => (
-              <tr key={l.id} className="odd:bg-white even:bg-gray-50 dark:odd:bg-gray-900 dark:even:bg-gray-800">
-                <td className="align-top p-2 border-b whitespace-nowrap">{new Date(l.created_at).toLocaleString()}</td>
-                <td className="align-top p-2 border-b">{l.name || "—"}</td>
-                <td className="align-top p-2 border-b">{l.email}</td>
-                <td className="align-top p-2 border-b">{l.company || "—"}</td>
-                <td className="align-top p-2 border-b max-w-[520px] whitespace-pre-wrap">{l.message || "—"}</td>
-              </tr>
-            ))}
-            {data.length === 0 && (
-              <tr>
-                <td colSpan={5} className="p-4 text-center text-gray-500">Nenhum lead encontrado.</td>
-              </tr>
-            )}
-          </tbody>
-        </table>
-      </div>
+      <Card>
+        <CardHeader>
+          <div className="flex items-center justify-between">
+            <p className="font-semibold">Últimos Leads</p>
+            <Badge>{data.length}</Badge>
+          </div>
+        </CardHeader>
+        <CardContent className="overflow-x-auto">
+          <Table className="border border-gray-200 dark:border-gray-700">
+            <Thead>
+              <Trow>
+                <Th>Data</Th>
+                <Th>Nome</Th>
+                <Th>Email</Th>
+                <Th>Empresa</Th>
+                <Th>Mensagem</Th>
+              </Trow>
+            </Thead>
+            <Tbody>
+              {data.map((l) => (
+                <Trow key={l.id} className="odd:bg-white even:bg-gray-50 dark:odd:bg-gray-900 dark:even:bg-gray-800">
+                  <Td className="whitespace-nowrap">{new Date(l.created_at).toLocaleString()}</Td>
+                  <Td>{l.name || "—"}</Td>
+                  <Td>{l.email}</Td>
+                  <Td>{l.company || "—"}</Td>
+                  <Td className="max-w-[520px] whitespace-pre-wrap">{l.message || "—"}</Td>
+                </Trow>
+              ))}
+              {data.length === 0 && !error && (
+                <Trow>
+                  <Td colSpan={5} className="p-4 text-center text-gray-500">Nenhum lead encontrado.</Td>
+                </Trow>
+              )}
+            </Tbody>
+          </Table>
+        </CardContent>
+      </Card>
     </div>
   );
 }
