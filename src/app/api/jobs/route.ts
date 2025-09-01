@@ -7,6 +7,8 @@ import { getSupabase } from "@/lib/supabase";
 import { logApiCall } from "@/lib/error-handling";
 import { revalidateJobs } from "@/lib/cache";
 
+export const runtime = "nodejs";
+
 export async function GET(request: NextRequest) {
   const jobs = await readJobs();
   

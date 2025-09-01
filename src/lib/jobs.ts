@@ -1,20 +1,10 @@
+import 'server-only';
 import { promises as fs } from "fs";
 import path from "path";
 import { getSupabase } from "./supabase";
+import { type Job as SharedJob, getSlug as sharedGetSlug, normalizeTags as sharedNormalizeTags } from "./jobs.shared";
 
-export type Job = {
-  id: string;
-  title: string;
-  company: string;
-  location: string; // e.g., "Brazil (Remote)"
-  type?: string; // e.g., Full-time, Contract
-  salary?: string; // free text
-  applyUrl: string;
-  description?: string;
-  createdAt: string; // ISO string
-  slug?: string; // SEO-friendly slug
-  tags?: string[]; // normalized, lowercase
-};
+export type Job = SharedJob;
 
 const dataDir = path.join(process.cwd(), "data");
 const dataFile = path.join(dataDir, "jobs.json");
@@ -41,7 +31,7 @@ export async function readJobs(): Promise<Job[]> {
       .from("jobs")
       .select("*")
       .order("created_at", { ascending: false });
-    if (!error && data) {
+  if (!error && data && data.length) {
       // Map columns from DB to Job shape
       return (data as DbJobRow[]).map((r) => ({
         id: r.id,
@@ -56,7 +46,8 @@ export async function readJobs(): Promise<Job[]> {
         slug: r.slug ?? undefined,
         tags: r.tags ?? undefined,
       }));
-    }
+  }
+  // If DB returned empty in dev, continue to file fallback below
   }
 
   // Fallback to JSON file
@@ -137,8 +128,8 @@ export function createJob(input: Partial<Job>): Job {
   };
   const withSlugAndTags = {
     ...base,
-    slug: input.slug ?? computeSlug(base),
-    tags: normalizeTags(input.tags),
+  slug: input.slug ?? computeSlug(base),
+  tags: normalizeTags(input.tags),
   } satisfies Job;
   return withSlugAndTags;
 }
@@ -149,9 +140,7 @@ function computeSlug(job: Pick<Job, "title" | "company" | "id">): string {
   return `${slugify(job.title)}-${slugify(job.company)}-${tail}`.toLowerCase();
 }
 
-export function getSlug(job: Job): string {
-  return job.slug || computeSlug(job);
-}
+export const getSlug = (job: Job) => sharedGetSlug(job);
 
 function slugify(s: string): string {
   return s
@@ -162,29 +151,4 @@ function slugify(s: string): string {
     .slice(0, 60);
 }
 
-export function normalizeTags(tags: unknown): string[] | undefined {
-  if (!tags) return undefined;
-  if (Array.isArray(tags)) {
-    const list = tags
-      .filter((t): t is string => typeof t === "string")
-      .flatMap((t) => splitTags(t))
-      .map((t) => t.toLowerCase())
-      .map((t) => t.trim())
-      .filter(Boolean);
-    const unique = Array.from(new Set(list));
-    return unique.length ? unique : undefined;
-  }
-  if (typeof tags === "string") {
-    const list = splitTags(tags)
-      .map((t) => t.toLowerCase().trim())
-      .filter(Boolean);
-    const unique = Array.from(new Set(list));
-    return unique.length ? unique : undefined;
-  }
-  return undefined;
-}
-
-function splitTags(s: string): string[] {
-  // Support comma or semicolon or whitespace separated
-  return s.split(/[;,\n\t ]+/g);
-}
+export const normalizeTags = (tags: unknown) => sharedNormalizeTags(tags);

@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import { getSlug, type Job } from "@/lib/jobs";
+import { getSlug, type Job } from "@/lib/jobs.shared";
 import { TagChip } from "@/components/TagChip";
 import useJobSearch from "@/hooks/useJobSearch";
 

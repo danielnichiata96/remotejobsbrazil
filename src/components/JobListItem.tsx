@@ -1,6 +1,6 @@
 import Link from "next/link";
-import type { Job } from "@/lib/jobs";
-import { getSlug } from "@/lib/jobs";
+import type { Job } from "@/lib/jobs.shared";
+import { getSlug } from "@/lib/jobs.shared";
 
 export function JobListItem({ job }: { job: Job }) {
   return (

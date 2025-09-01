@@ -8,6 +8,8 @@ export default defineConfig({
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "src"),
+  // Stub Next.js server-only marker during tests to a no-op module
+  "server-only": path.resolve(__dirname, "test/mocks/server-only.ts"),
     },
   },
   esbuild: {

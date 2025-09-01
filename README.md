@@ -98,10 +98,10 @@ NEXT_PUBLIC_SITE_URL=http://localhost:3000
 - [x] **Client-side Search**: Instant job search with Fuse.js
 
 ### 📈 Quality Metrics
-- **Tests**: 12/12 passing (slug generation, tag normalization, API, pages)
-- **Build**: Zero TypeScript/ESLint errors
-- **Bundle**: ~118kB optimized
-- **Pages**: 14 routes (dynamic + static)
+ **Tests**: 12 files / 19 testes passando (slug generation, tag normalization, API, pages)
+ **Build**: sem erros de TypeScript/ESLint no build; avisos tratados
+ **Bundle (First Load)**: ~127 kB (build atual)
+ **Pages**: 14+ rotas (dinâmicas + estáticas)
 - **SEO**: Schema.org JobPosting compliance
 - **Design**: 100% consistent theme application across all components
 
@@ -125,6 +125,16 @@ API
 Deploy to Vercel
  - Push this repo to GitHub and import it in Vercel. No extra config needed.
 	- Set `NEXT_PUBLIC_SITE_URL=https://your-domain.com` for correct sitemap/OG/RSS absolute URLs.
+
+## 🧱 Client vs Server architecture
+
+- `src/lib/jobs.shared.ts`: client-safe helpers (Job, getSlug, normalizeTags). Safe to import in components with "use client".
+- `src/lib/jobs.ts`: server-only functions (readJobs/writeJobs with fs/Supabase) and re-exports of helpers. Only import in server code (routes, RSC).
+
+This prevents bundling Node APIs into the browser and keeps SSR/ISR working. Use `@/lib/jobs.shared` on the client and `@/lib/jobs` on the server.
+
+### Testing notes
+- In unit tests, `server-only` is aliased to a no-op stub to avoid runtime throws. See `vitest.config.ts` (alias to `test/mocks/server-only.ts`).
 
 ## 🎨 Design System
 
@@ -356,7 +366,7 @@ supabase db push    # Apply migrations
 ## 🗄️ Database Schema (Supabase)
 
 ### Jobs Table
-```sql
+## 🔧 Quick Implementation Guide
 create table if not exists jobs (
   id text primary key,
   title text not null,

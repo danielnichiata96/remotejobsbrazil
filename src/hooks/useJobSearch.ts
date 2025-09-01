@@ -1,7 +1,7 @@
 "use client";
 import { useMemo, useState } from "react";
 import Fuse from "fuse.js";
-import type { Job } from "@/lib/jobs";
+import type { Job } from "@/lib/jobs.shared";
 
 export default function useJobSearch(allJobs: Job[]) {
   const [query, setQuery] = useState("");

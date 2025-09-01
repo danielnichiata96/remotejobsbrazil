@@ -1,5 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { POST } from "@/app/api/jobs/route";
+import type { NextRequest } from "next/server";
 
 // Mock cookies/auth and supabase to bypass auth/DB in tests
 vi.mock("next/headers", () => ({ cookies: vi.fn(async () => ({ get: () => undefined })) }));
@@ -38,7 +39,7 @@ describe("POST /api/jobs", () => {
       description: "Great role",
       tags: ["react", "node"],
     });
-  const res = await POST(req);
+  const res = await POST(req as unknown as NextRequest);
     expect(res.status).toBe(201);
     const json = await res.json();
     expect(json.job).toMatchObject({ title: "Senior React Dev", company: "Acme" });
@@ -46,7 +47,7 @@ describe("POST /api/jobs", () => {
 
   it("returns 400 on invalid payload (missing fields)", async () => {
     const req = jsonReq({ company: "Acme" });
-  const res = await POST(req);
+  const res = await POST(req as unknown as NextRequest);
     expect(res.status).toBe(400);
     const json = await res.json();
     expect(json.error).toBeTruthy();

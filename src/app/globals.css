@@ -60,3 +60,17 @@ body {
 	background-repeat: no-repeat;
 }
 
+/* Force light theme for now (override dark scheme) */
+:root { color-scheme: light; }
+@media (prefers-color-scheme: dark) {
+	:root {
+		color-scheme: light;
+		--color-background: #ffffff;
+		--color-foreground: #0f172a;
+		--color-muted: #f1f5f9;
+		--color-muted-foreground: #475569;
+		--color-border: #e2e8f0;
+		--color-surface: #ffffff;
+	}
+}
+

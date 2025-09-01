@@ -6,6 +6,8 @@ type BulkBody = {
   jobs: Array<Partial<Job>>;
 };
 
+export const runtime = "nodejs";
+
 export async function POST(req: Request) {
   let body: BulkBody;
   try {
