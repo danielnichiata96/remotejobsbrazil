@@ -27,11 +27,11 @@ export default async function Home() {
         <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
           {/* Sidebar filters (placeholder to match visual) */}
           <aside className="md:col-span-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] p-4 shadow-sm">
-            <h3 className="text-sm font-semibold text-[var(--color-foreground)]">Filtros</h3>
+            <h3 className="text-sm font-semibold text-[var(--color-foreground)]">Filters</h3>
             <div className="mt-4 space-y-3 text-sm text-[var(--color-foreground)]/70">
-              <label className="flex items-center gap-2"><input type="checkbox" defaultChecked className="size-4"/> Tempo integral</label>
-              <label className="flex items-center gap-2"><input type="checkbox" className="size-4"/> Meio período</label>
-              <label className="flex items-center gap-2"><input type="checkbox" className="size-4"/> Estágio</label>
+              <label className="flex items-center gap-2"><input type="checkbox" defaultChecked className="size-4"/> Full-time</label>
+              <label className="flex items-center gap-2"><input type="checkbox" className="size-4"/> Part-time</label>
+              <label className="flex items-center gap-2"><input type="checkbox" className="size-4"/> Internship</label>
               <div className="pt-3 border-t border-[var(--color-border)]" />
               <label className="flex items-center gap-2"><input type="checkbox" defaultChecked className="size-4"/> Design</label>
               <label className="flex items-center gap-2"><input type="checkbox" className="size-4"/> Front-end</label>
@@ -41,12 +41,12 @@ export default async function Home() {
 
           {/* Jobs list */}
           <div className="md:col-span-9">
-            <h2 className="mb-4 text-lg font-semibold text-[var(--color-foreground)]">Últimas vagas</h2>
+            <h2 className="mb-4 text-lg font-semibold text-[var(--color-foreground)]">Latest jobs</h2>
             {jobs.length === 0 ? (
               <div className="rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] p-10 text-center text-[var(--color-foreground)]/70">
-                Nenhuma vaga encontrada. Seja o primeiro a postar!
+                No jobs found. Be the first to post!
                 <div className="mt-4">
-                  <Link href="/post" className="inline-flex items-center rounded-md bg-[var(--color-primary)] px-4 py-2 text-sm font-medium text-[var(--color-primary-foreground)] hover:brightness-95">Postar vaga</Link>
+                  <Link href="/post" className="inline-flex items-center rounded-md bg-[var(--color-primary)] px-4 py-2 text-sm font-medium text-[var(--color-primary-foreground)] hover:brightness-95">Post a job</Link>
                 </div>
               </div>
             ) : (
@@ -64,7 +64,7 @@ export default async function Home() {
                         {job.salary && (
                           <span className="text-xs font-medium rounded-full bg-[var(--color-muted)] text-[var(--color-foreground)] px-3 py-1">{job.salary}</span>
                         )}
-                        <a href={job.applyUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center rounded-md bg-[var(--color-accent)] text-[var(--color-accent-foreground)] px-3 py-1.5 text-sm hover:brightness-95">Candidatar-se</a>
+                        <a href={job.applyUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center rounded-md bg-[var(--color-accent)] text-[var(--color-accent-foreground)] px-3 py-1.5 text-sm hover:brightness-95">Apply</a>
                       </div>
                     </div>
                     {job.tags && job.tags.length > 0 && (

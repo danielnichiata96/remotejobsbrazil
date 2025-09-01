@@ -53,7 +53,7 @@ function Dashboard() {
       </form>
 
       <div>
-        <a href="/admin/leads" className="underline text-sm">Ver Leads</a>
+        <a href="/admin/leads" className="underline text-sm">View Leads</a>
       </div>
 
       <h2 className="text-lg font-semibold">Add Job (manual)</h2>
@@ -91,7 +91,7 @@ function ManualJobForm() {
           </div>
           <div className="grid gap-1">
             <Label htmlFor="salary">Salary</Label>
-            <Input id="salary" name="salary" placeholder="R$ ..." />
+            <Input id="salary" name="salary" placeholder="$..." />
           </div>
           <div className="grid gap-1">
             <Label htmlFor="description">Description</Label>

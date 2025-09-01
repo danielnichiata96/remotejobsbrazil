@@ -6,19 +6,17 @@ import { Metadata } from "next";
 export const revalidate = 600; // 10 minutes
 
 export const metadata: Metadata = {
-  title: "Vagas Remotas de QA no Brasil | Remote Jobs Brazil",
-  description: "Oportunidades de QA e testes totalmente remotas no Brasil.",
+  title: "Remote QA Jobs in Brazil | Remote Jobs Brazil",
+  description: "Fully remote QA and testing opportunities in Brazil.",
   alternates: { canonical: "/remote-qa-jobs-brazil" },
   openGraph: {
-    title: "Vagas Remotas de QA no Brasil",
-    description: "Teste de software e QA em vagas 100% remotas.",
+    title: "Remote QA Jobs in Brazil",
+    description: "Software testing and QA in 100% remote jobs.",
     type: "website",
     url: "/remote-qa-jobs-brazil",
   },
-  twitter: { card: "summary", title: "Vagas Remotas de QA no Brasil", description: "Vagas de QA remotas" },
+  twitter: { card: "summary", title: "Remote QA Jobs in Brazil", description: "Remote QA jobs" },
 };
-
-export const dynamic = "force-dynamic";
 
 export default async function Page() {
   const jobs = await readJobs();
@@ -28,9 +26,9 @@ export default async function Page() {
   return (
     <div className="min-h-screen bg-background text-foreground px-6 py-10">
       <div className="max-w-5xl mx-auto">
-        <h1 className="text-3xl font-bold mb-2">Vagas Remotas de QA no Brasil</h1>
+        <h1 className="text-3xl font-bold mb-2">Remote QA Jobs in Brazil</h1>
         <p className="text-sm text-foreground/70 mb-6">
-          Oportunidades de QA e testes totalmente remotas no Brasil.
+          Fully remote QA and testing opportunities in Brazil.
         </p>
         <ul className="space-y-3">
           {filtered.map((j) => (

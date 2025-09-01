@@ -35,7 +35,7 @@ export default async function AdminLeadsPage() {
           <h1 className="text-2xl font-bold">Leads</h1>
           <Link href="/" className="underline text-sm">Back</Link>
         </header>
-        <p className="text-sm">Não autorizado. Faça login em <Link href="/admin" className="underline">/admin</Link>.</p>
+        <p className="text-sm">Unauthorized. Please login at <Link href="/admin" className="underline">/admin</Link>.</p>
       </div>
     );
   }
@@ -55,12 +55,12 @@ export default async function AdminLeadsPage() {
       {error && (
         <Card>
           <CardHeader>
-            <p className="text-red-600 text-sm">Erro ao carregar: {error}</p>
+            <p className="text-red-600 text-sm">Error loading leads: {error}</p>
           </CardHeader>
           <CardContent className="flex items-center justify-between">
-            <p className="text-sm text-foreground/70">Verifique as variáveis SUPABASE_URL e SUPABASE_SERVICE_ROLE no ambiente.</p>
+            <p className="text-sm text-foreground/70">Check the SUPABASE_URL and SUPABASE_SERVICE_ROLE environment variables.</p>
             <Button variant="secondary" size="sm" onClick={() => {}}>
-              <a href="/admin/leads">Tentar novamente</a>
+              <a href="/admin/leads">Try again</a>
             </Button>
           </CardContent>
         </Card>
@@ -69,7 +69,7 @@ export default async function AdminLeadsPage() {
       <Card>
         <CardHeader>
           <div className="flex items-center justify-between">
-            <p className="font-semibold">Últimos Leads</p>
+            <p className="font-semibold">Latest Leads</p>
             <Badge>{data.length}</Badge>
           </div>
         </CardHeader>
@@ -77,11 +77,11 @@ export default async function AdminLeadsPage() {
           <Table className="border border-[var(--color-border)]">
             <Thead>
               <Trow>
-                <Th>Data</Th>
-                <Th>Nome</Th>
+                <Th>Date</Th>
+                <Th>Name</Th>
                 <Th>Email</Th>
-                <Th>Empresa</Th>
-                <Th>Mensagem</Th>
+                <Th>Company</Th>
+                <Th>Message</Th>
               </Trow>
             </Thead>
             <Tbody>
@@ -96,7 +96,7 @@ export default async function AdminLeadsPage() {
               ))}
               {data.length === 0 && !error && (
                 <Trow>
-                  <Td colSpan={5} className="p-4 text-center text-foreground/70">Nenhum lead encontrado.</Td>
+                  <Td colSpan={5} className="p-4 text-center text-foreground/70">No leads found.</Td>
                 </Trow>
               )}
             </Tbody>

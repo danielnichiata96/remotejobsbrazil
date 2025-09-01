@@ -22,17 +22,17 @@ export const metadata: Metadata = {
   description: "Lean job board for remote roles in Brazil",
   openGraph: {
     title: "Remote Jobs Brazil 🇧🇷",
-    description: "Trabalhos 100% remotos para o Brasil. Next.js + Supabase.",
+    description: "100% remote jobs for Brazil. Next.js + Supabase.",
     type: "website",
-    locale: "pt_BR",
-    alternateLocale: "en_US",
+    locale: "en_US",
+    alternateLocale: "pt_BR",
     siteName: "Remote Jobs Brazil",
     url: "/",
   },
   twitter: {
     card: "summary",
     title: "Remote Jobs Brazil 🇧🇷",
-    description: "Trabalhos 100% remotos para o Brasil",
+    description: "100% remote jobs for Brazil",
   },
   robots: {
     index: true,
@@ -58,7 +58,7 @@ export default function RootLayout({
     sameAs: [],
   };
   return (
-    <html lang="pt-BR">
+    <html lang="en-US">
       <head>
   <link rel="alternate" type="application/atom+xml" href="/feed.xml" />
         <script

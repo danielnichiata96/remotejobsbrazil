@@ -45,7 +45,7 @@ export default async function JobPage({ params }: Props) {
         />
         <nav className="mb-6 text-sm">
           <Link href="/" className="text-[var(--color-accent)] hover:underline">
-            ← Voltar
+            ← Back
           </Link>
         </nav>
         <h1 className="text-3xl font-bold">{job.title}</h1>
@@ -82,7 +82,7 @@ export default async function JobPage({ params }: Props) {
             rel="noopener noreferrer"
       className="inline-flex items-center justify-center rounded-md bg-[var(--color-accent)] text-[var(--color-accent-foreground)] px-5 py-2 text-sm font-medium hover:brightness-95"
           >
-            Candidatar-se →
+            Apply →
           </a>
         </div>
       </div>

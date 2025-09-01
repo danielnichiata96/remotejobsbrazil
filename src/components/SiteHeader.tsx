@@ -11,8 +11,8 @@ export function SiteHeader() {
           <Link href="/remote-react-jobs-brazil" className="text-[var(--color-foreground)]/80 hover:text-[var(--color-foreground)]">React</Link>
           <Link href="/remote-node-jobs-brazil" className="text-[var(--color-foreground)]/80 hover:text-[var(--color-foreground)]">Node.js</Link>
           <Link href="/remote-qa-jobs-brazil" className="text-[var(--color-foreground)]/80 hover:text-[var(--color-foreground)]">QA</Link>
-          <Link href="/employers" className="text-[var(--color-foreground)]/80 hover:text-[var(--color-foreground)]">Para Empresas</Link>
-          <Link href="/post" className="inline-flex items-center rounded-md px-3 py-1.5 font-medium bg-[var(--color-primary)] text-[var(--color-primary-foreground)] hover:brightness-95">Postar Vaga</Link>
+          <Link href="/employers" className="text-[var(--color-foreground)]/80 hover:text-[var(--color-foreground)]">For Employers</Link>
+          <Link href="/post" className="inline-flex items-center rounded-md px-3 py-1.5 font-medium bg-[var(--color-primary)] text-[var(--color-primary-foreground)] hover:brightness-95">Post a Job</Link>
         </nav>
       </div>
     </header>

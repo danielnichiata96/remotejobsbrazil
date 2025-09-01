@@ -53,51 +53,51 @@ export default function PostJobPage() {
     <div className="min-h-screen bg-background text-foreground px-6 py-10">
       <div className="max-w-2xl mx-auto">
         <header className="mb-8">
-          <h1 className="text-3xl font-bold">Postar Vaga</h1>
+          <h1 className="text-3xl font-bold">Post a Job</h1>
           <p className="text-sm text-foreground/70">
-            Compartilhe uma oportunidade 100% remota para candidatos no Brasil.
+            Share a 100% remote opportunity for candidates in Brazil.
           </p>
         </header>
 
         <form onSubmit={onSubmit} className="space-y-5 bg-[var(--color-surface)] border border-[var(--color-border)] rounded-lg p-6" aria-describedby="form-status" aria-live="polite">
           <div className="grid gap-1">
-            <label htmlFor="title" className="text-sm font-medium">Título da vaga *</label>
+            <label htmlFor="title" className="text-sm font-medium">Job Title *</label>
             <input id="title" name="title" required className="border border-[var(--color-border)] rounded-md px-3 py-2 bg-transparent focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]" placeholder="Ex: Senior React Developer" />
           </div>
 
           <div className="grid gap-1">
-            <label htmlFor="company" className="text-sm font-medium">Empresa *</label>
+            <label htmlFor="company" className="text-sm font-medium">Company *</label>
             <input id="company" name="company" required className="border border-[var(--color-border)] rounded-md px-3 py-2 bg-transparent focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]" placeholder="Ex: Acme Ltd" />
           </div>
 
           <div className="grid gap-1">
-            <label htmlFor="applyUrl" className="text-sm font-medium">URL para aplicar *</label>
+            <label htmlFor="applyUrl" className="text-sm font-medium">Apply URL *</label>
             <input id="applyUrl" name="applyUrl" type="url" required className="border border-[var(--color-border)] rounded-md px-3 py-2 bg-transparent focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]" placeholder="https://..." />
           </div>
 
           <div className="grid gap-4 sm:grid-cols-2">
             <div className="grid gap-1">
-              <label htmlFor="location" className="text-sm font-medium">Local</label>
+              <label htmlFor="location" className="text-sm font-medium">Location</label>
               <input id="location" name="location" className="border border-[var(--color-border)] rounded-md px-3 py-2 bg-transparent focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]" placeholder="Brazil (Remote)" />
             </div>
             <div className="grid gap-1">
-              <label htmlFor="type" className="text-sm font-medium">Tipo</label>
+              <label htmlFor="type" className="text-sm font-medium">Type</label>
               <input id="type" name="type" className="border border-[var(--color-border)] rounded-md px-3 py-2 bg-transparent focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]" placeholder="Full-time" />
             </div>
           </div>
 
           <div className="grid gap-1">
-            <label htmlFor="salary" className="text-sm font-medium">Salário</label>
-            <input id="salary" name="salary" className="border border-[var(--color-border)] rounded-md px-3 py-2 bg-transparent focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]" placeholder="R$ ..." />
+            <label htmlFor="salary" className="text-sm font-medium">Salary</label>
+            <input id="salary" name="salary" className="border border-[var(--color-border)] rounded-md px-3 py-2 bg-transparent focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]" placeholder="$..." />
           </div>
 
           <div className="grid gap-1">
-            <label htmlFor="description" className="text-sm font-medium">Descrição</label>
-            <textarea id="description" name="description" rows={6} className="border border-[var(--color-border)] rounded-md px-3 py-2 bg-transparent focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]" placeholder="Responsabilidades, requisitos, benefícios..." />
+            <label htmlFor="description" className="text-sm font-medium">Description</label>
+            <textarea id="description" name="description" rows={6} className="border border-[var(--color-border)] rounded-md px-3 py-2 bg-transparent focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]" placeholder="Responsibilities, requirements, benefits..." />
           </div>
 
           <div className="grid gap-1">
-            <label htmlFor="tags" className="text-sm font-medium">Tags (separadas por vírgula)</label>
+            <label htmlFor="tags" className="text-sm font-medium">Tags (comma-separated)</label>
             <input id="tags" name="tags" className="border border-[var(--color-border)] rounded-md px-3 py-2 bg-transparent focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]" placeholder="react, node, aws" />
           </div>
 
@@ -106,7 +106,7 @@ export default function PostJobPage() {
             disabled={state.status === "submitting"}
             className="inline-flex items-center justify-center rounded-md bg-[var(--color-primary)] text-[var(--color-primary-foreground)] px-4 py-2 text-sm font-medium hover:brightness-95 disabled:opacity-50"
           >
-            {state.status === "submitting" ? "Publicando…" : "Publicar vaga"}
+            {state.status === "submitting" ? "Publishing…" : "Publish Job"}
           </button>
 
           {state.status === "error" && (
@@ -116,7 +116,7 @@ export default function PostJobPage() {
           )}
           {state.status === "success" && (
             <p id="form-status" ref={alertRef} tabIndex={-1} role="status" className="text-sm text-green-600">
-              Vaga criada! <Link className="underline" href="/">Voltar para vagas</Link>
+              Job created! <Link className="underline" href="/">Back to jobs</Link>
             </p>
           )}
         </form>

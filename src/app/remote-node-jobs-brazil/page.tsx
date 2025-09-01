@@ -6,19 +6,17 @@ import { Metadata } from "next";
 export const revalidate = 600; // 10 minutes
 
 export const metadata: Metadata = {
-  title: "Vagas Remotas de Node.js no Brasil | Remote Jobs Brazil",
-  description: "Vagas backend com Node.js totalmente remotas para profissionais no Brasil.",
+  title: "Remote Node.js Jobs in Brazil | Remote Jobs Brazil",
+  description: "Fully remote backend jobs with Node.js for professionals in Brazil.",
   alternates: { canonical: "/remote-node-jobs-brazil" },
   openGraph: {
-    title: "Vagas Remotas de Node.js no Brasil",
-    description: "Trabalhos Node.js remotos para profissionais no Brasil.",
+    title: "Remote Node.js Jobs in Brazil",
+    description: "Remote Node.js jobs for professionals in Brazil.",
     type: "website",
     url: "/remote-node-jobs-brazil",
   },
-  twitter: { card: "summary", title: "Vagas Remotas de Node.js no Brasil", description: "Vagas Node remotas" },
+  twitter: { card: "summary", title: "Remote Node.js Jobs in Brazil", description: "Remote Node jobs" },
 };
-
-export const dynamic = "force-dynamic";
 
 export default async function Page() {
   const jobs = await readJobs();
@@ -28,9 +26,9 @@ export default async function Page() {
   return (
     <div className="min-h-screen bg-background text-foreground px-6 py-10">
       <div className="max-w-5xl mx-auto">
-        <h1 className="text-3xl font-bold mb-2">Vagas Remotas de Node.js no Brasil</h1>
+        <h1 className="text-3xl font-bold mb-2">Remote Node.js Jobs in Brazil</h1>
         <p className="text-sm text-foreground/70 mb-6">
-          Vagas backend com Node.js totalmente remotas para profissionais no Brasil.
+          Fully remote backend jobs with Node.js for professionals in Brazil.
         </p>
         <ul className="space-y-3">
           {filtered.map((j) => (

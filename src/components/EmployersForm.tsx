@@ -26,9 +26,9 @@ export default function EmployersForm() {
         const text = await res.text().catch(() => "");
         try {
           const data = JSON.parse(text);
-          setErrorMsg(typeof data.error === "string" ? data.error : "Erro ao enviar");
+          setErrorMsg(typeof data.error === "string" ? data.error : "Error sending message");
         } catch {
-          setErrorMsg("Erro ao enviar");
+          setErrorMsg("Error sending message");
         }
         setStatus("error");
         return;
@@ -37,33 +37,33 @@ export default function EmployersForm() {
       setStatus("ok");
     } catch {
       setStatus("error");
-      setErrorMsg("Não foi possível enviar. Verifique sua conexão e tente novamente.");
+      setErrorMsg("Could not send message. Check your connection and try again.");
     }
   }
 
   return (
   <form onSubmit={onSubmit} className="mt-6 space-y-4 bg-[var(--color-surface)] border border-[var(--color-border)] rounded-lg p-6">
       <div className="grid gap-1">
-    <label htmlFor="name" className="text-sm font-medium text-[var(--color-foreground)]">Seu nome</label>
+    <label htmlFor="name" className="text-sm font-medium text-[var(--color-foreground)]">Your Name</label>
     <input id="name" name="name" className="border border-[var(--color-border)] rounded-md px-3 py-2 bg-transparent" />
       </div>
       <div className="grid gap-1">
-    <label htmlFor="email" className="text-sm font-medium text-[var(--color-foreground)]">E-mail (obrigatório)</label>
+    <label htmlFor="email" className="text-sm font-medium text-[var(--color-foreground)]">E-mail (required)</label>
     <input id="email" name="email" type="email" required className="border border-[var(--color-border)] rounded-md px-3 py-2 bg-transparent" />
       </div>
       <div className="grid gap-1">
-    <label htmlFor="company" className="text-sm font-medium text-[var(--color-foreground)]">Empresa</label>
+    <label htmlFor="company" className="text-sm font-medium text-[var(--color-foreground)]">Company</label>
     <input id="company" name="company" className="border border-[var(--color-border)] rounded-md px-3 py-2 bg-transparent" />
       </div>
       <div className="grid gap-1">
-    <label htmlFor="message" className="text-sm font-medium text-[var(--color-foreground)]">Descrição da necessidade</label>
-    <textarea id="message" name="message" rows={5} className="border border-[var(--color-border)] rounded-md px-3 py-2 bg-transparent" placeholder="Stack, nível, prazos, orçamento..." />
+    <label htmlFor="message" className="text-sm font-medium text-[var(--color-foreground)]">Description of need</label>
+    <textarea id="message" name="message" rows={5} className="border border-[var(--color-border)] rounded-md px-3 py-2 bg-transparent" placeholder="Stack, level, deadlines, budget..." />
       </div>
   <button type="submit" disabled={status === "submitting"} className="w-full bg-[var(--color-accent)] hover:brightness-95 disabled:opacity-60 disabled:cursor-not-allowed text-[var(--color-accent-foreground)] font-medium py-2.5 rounded-md">
-        Solicitar publicação/parceria
+        Request publication/partnership
       </button>
-  {status === "ok" && <p className="text-green-600 text-sm">Recebido! Entraremos em contato.</p>}
-  {status === "error" && <p className="text-red-600 text-sm">{errorMsg || "Erro ao enviar. Tente novamente."}</p>}
+  {status === "ok" && <p className="text-green-600 text-sm">Received! We will be in touch.</p>}
+  {status === "error" && <p className="text-red-600 text-sm">{errorMsg || "Error sending. Please try again."}</p>}
     </form>
   );
 }
