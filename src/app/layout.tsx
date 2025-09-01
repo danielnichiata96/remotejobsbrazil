@@ -53,7 +53,6 @@ export default function RootLayout({
     url: "https://remotejobsbrazil.vercel.app",
     sameAs: [],
   };
-
   return (
     <html lang="pt-BR">
       <head>
