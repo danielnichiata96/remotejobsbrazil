@@ -118,7 +118,7 @@ export async function POST(request: NextRequest) {
         created_at: job.createdAt,
         slug: job.slug ?? null,
         tags: job.tags ?? null,
-  logo_url: (job as any).logoUrl ?? null,
+  logo_url: (job as unknown as Record<string, unknown>).logoUrl as string | null ?? null,
       });
       if (!error) {
         // Revalidate cache after successful job creation

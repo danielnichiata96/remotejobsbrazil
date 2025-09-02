@@ -172,7 +172,7 @@ async function findBySlugOrId(slugOrId: string): Promise<Job | undefined> {
 }
 
 function jobToJsonLd(job: Job) {
-  const base: any = {
+  const base: Record<string, unknown> = {
     "@context": "https://schema.org/",
     "@type": "JobPosting",
     title: job.title,
@@ -195,10 +195,10 @@ function jobToJsonLd(job: Job) {
   };
   if (job.salary) {
     // Use a safe schema property to include free-form salary text
-    base.estimatedSalary = job.salary;
+    (base as Record<string, unknown>)['estimatedSalary'] = job.salary;
   }
   if (job.roleCategory) {
-    base.occupationalCategory = job.roleCategory;
+    (base as Record<string, unknown>)['occupationalCategory'] = job.roleCategory;
   }
   return base;
 }

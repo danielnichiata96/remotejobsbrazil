@@ -208,7 +208,7 @@ export async function POST(req: NextRequest) {
       created_at: j.createdAt,
       slug: j.slug ?? null,
       tags: j.tags ?? null,
-  logo_url: (j as any).logoUrl ?? null,
+  logo_url: (j as unknown as Record<string, unknown>).logoUrl as string | null ?? null,
     }));
     const { error } = await sb.from("jobs").upsert(payload, { onConflict: "id" });
     if (!error) {
