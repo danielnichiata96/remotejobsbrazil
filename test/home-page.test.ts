@@ -19,7 +19,8 @@ const sampleJobs = [
     description: "Build UIs",
     createdAt: new Date().toISOString(),
     slug: "frontend-engineer-tech-samba-seed-1",
-    tags: ["react"],
+  tags: ["react"],
+  status: "approved",
   },
 ];
 
@@ -37,7 +38,7 @@ const loadPage = () => import("@/app/page");
 describe("homepage", () => {
   it("renders empty state in English", async () => {
     const mod = await loadPage();
-    const Page = mod.default as () => Promise<React.ReactElement>;
+    const Page = mod.default as ({ searchParams }?: { searchParams?: Record<string, string> }) => Promise<React.ReactElement>;
     const html = renderToString(await Page());
     expect(html).toContain("No jobs found");
   });
@@ -48,9 +49,26 @@ describe("homepage", () => {
       sampleJobs
     );
     const mod = await loadPage();
-    const Page = mod.default as () => Promise<React.ReactElement>;
+    const Page = mod.default as ({ searchParams }?: { searchParams?: Record<string, string> }) => Promise<React.ReactElement>;
     const html = renderToString(await Page());
     expect(html).toContain(sampleJobs[0].title);
     expect(html).toContain(`/jobs/${sampleJobs[0].slug}`);
+  });
+
+  it("paginates results and renders controls", async () => {
+    const jobsMod = await import("@/lib/jobs");
+    const many = Array.from({ length: 25 }, (_, i) => ({ ...sampleJobs[0], id: `id-${i}`, slug: `slug-${i}` }));
+    (jobsMod.readJobs as unknown as { mockResolvedValueOnce: (v: unknown) => void }).mockResolvedValueOnce(
+      many
+    );
+    const mod = await loadPage();
+    const Page = mod.default as ({ searchParams }?: { searchParams?: Record<string, string> }) => Promise<React.ReactElement>;
+    const html = renderToString(await Page({ searchParams: { page: "2", perPage: "10" } }));
+    // Should not contain first page job
+    expect(html).not.toContain("slug-0");
+    // Should contain page 2 range
+    expect(html).toContain("slug-10");
+    expect(html).toContain("Next");
+    expect(html).toContain("Previous");
   });
 });

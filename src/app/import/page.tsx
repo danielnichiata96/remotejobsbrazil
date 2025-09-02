@@ -55,7 +55,7 @@ export default function ImportPage() {
       </header>
 
       <p className="text-sm text-zinc-600 dark:text-zinc-400 mb-3">
-        Paste a JSON array of jobs or NDJSON (one JSON per line) with fields: title, company, applyUrl, and optional location, type, salary, description.
+        Paste a JSON array of jobs or NDJSON (one JSON per line) with fields: title, company, applyUrl, and optional location, type, salary, description, logoUrl.
       </p>
 
       <textarea
@@ -79,7 +79,7 @@ export default function ImportPage() {
       <details className="mt-6 text-sm">
         <summary className="cursor-pointer">Example (NDJSON)</summary>
         <pre className="mt-2 p-3 bg-zinc-100 dark:bg-zinc-900 rounded-md overflow-auto text-xs">
-          <code>{`{"title":"Frontend Engineer","company":"Acme","applyUrl":"https://acme.com/apply","location":"Brazil (Remote)","type":"Full-time","salary":"R$ 15k–20k"}
+          <code>{`{"title":"Frontend Engineer","company":"Acme","applyUrl":"https://acme.com/apply","location":"Brazil (Remote)","type":"Full-time","salary":"R$ 15k–20k","logoUrl":"https://cdn.acme.com/logo.png"}
 {"title":"Backend Dev","company":"Beta","applyUrl":"https://beta.com/jobs/1"}`}</code>
         </pre>
       </details>

@@ -2,7 +2,8 @@ import 'server-only';
 import { promises as fs } from "fs";
 import path from "path";
 import { getSupabase } from "./supabase";
-import { type Job as SharedJob, getSlug as sharedGetSlug, normalizeTags as sharedNormalizeTags } from "./jobs.shared";
+import { type Job as SharedJob, getSlug as sharedGetSlug, normalizeTags as sharedNormalizeTags, JobSource, JobStatus, ScoringFactors, RoleCategory } from "./jobs.shared";
+import { inferRoleCategory } from "./scoring";
 
 export type Job = SharedJob;
 
@@ -23,17 +24,38 @@ export async function readJobs(): Promise<Job[]> {
       salary: string | null;
       apply_url: string;
       description: string | null;
+  curated_description: string | null;
       created_at: string;
       slug: string | null;
       tags: string[] | null;
+    logo_url?: string | null;
+      score: number | null;
+      source: string;
+      status: string | null;
+      keywords_matched: string[] | null;
+      scoring_factors: unknown | null;
+      is_featured: boolean | null;
+      crawled_at: string | null;
+      curator_notes: string | null;
+      original_url: string | null;
+      company_size: string | null;
+      experience_level: string | null;
+  role_category: string | null;
     };
     const { data, error } = await sb
       .from("jobs")
       .select("*")
       .order("created_at", { ascending: false });
-  if (!error && data && data.length) {
-      // Map columns from DB to Job shape
-      return (data as DbJobRow[]).map((r) => ({
+    if (!error && data && data.length) {
+      // If the table hasn't been migrated yet (columns missing), fall back to JSON file
+      const sample = data[0] as Record<string, unknown>;
+      const required = ["status", "curated_description", "role_category"];
+      const missingColumns = required.some((c) => !(c in sample));
+      if (missingColumns) {
+        // proceed to file fallback below
+      } else {
+        // Map columns from DB to Job shape
+        return (data as DbJobRow[]).map((r) => ({
         id: r.id,
         title: r.title,
         company: r.company,
@@ -41,12 +63,27 @@ export async function readJobs(): Promise<Job[]> {
         type: r.type ?? undefined,
         salary: r.salary ?? undefined,
         applyUrl: r.apply_url,
-        description: r.description ?? undefined,
+  description: r.description ?? undefined,
+  logoUrl: (r as any).logo_url ?? undefined,
+        curatedDescription: r.curated_description ?? undefined,
         createdAt: r.created_at,
         slug: r.slug ?? undefined,
         tags: r.tags ?? undefined,
-      }));
-  }
+        source: (r.source as JobSource) ?? 'manual',
+        status: (r.status as JobStatus) ?? 'approved',
+        score: r.score ?? undefined,
+        keywordsMatched: r.keywords_matched ?? undefined,
+        scoringFactors: r.scoring_factors as ScoringFactors ?? undefined,
+        isFeatured: r.is_featured ?? false,
+        crawledAt: r.crawled_at ?? undefined,
+        curatorNotes: r.curator_notes ?? undefined,
+        originalUrl: r.original_url ?? undefined,
+        companySize: r.company_size ?? undefined,
+        experienceLevel: r.experience_level ?? undefined,
+        roleCategory: (r.role_category ?? undefined) as RoleCategory | undefined,
+        }));
+      }
+    }
   // If DB returned empty in dev, continue to file fallback below
   }
 
@@ -78,14 +115,44 @@ export async function writeJobs(
       salary: j.salary ?? null,
       apply_url: j.applyUrl,
       description: j.description ?? null,
+  curated_description: j.curatedDescription ?? null,
       created_at: j.createdAt,
       slug: j.slug ?? null,
       tags: j.tags ?? null,
+  logo_url: (j as any).logoUrl ?? null,
+      score: j.score ?? null,
+      source: j.source,
+      status: j.status ?? null,
+      keywords_matched: j.keywordsMatched ?? null,
+      scoring_factors: j.scoringFactors ?? null,
+      is_featured: j.isFeatured ?? null,
+      crawled_at: j.crawledAt ?? null,
+      curator_notes: j.curatorNotes ?? null,
+      original_url: j.originalUrl ?? null,
+      company_size: j.companySize ?? null,
+      experience_level: j.experienceLevel ?? null,
+  role_category: j.roleCategory ?? null,
     }));
     const { error } = await sb.from("jobs").upsert(payload, { onConflict: "id" });
     if (!error) return { ok: true };
   }
 
+  try {
+    await fs.mkdir(dataDir, { recursive: true });
+    await fs.writeFile(
+      dataFile,
+      JSON.stringify(jobs, null, 2) + "\n",
+      "utf-8"
+    );
+    return { ok: true };
+  } catch (e: unknown) {
+    const message = e instanceof Error ? e.message : "Unknown FS error";
+    return { ok: false, error: message };
+  }
+}
+
+// Force writing jobs to the JSON file only (used when DB schema is missing columns)
+export async function writeJobsFile(jobs: Job[]): Promise<{ ok: boolean; error?: string }> {
   try {
     await fs.mkdir(dataDir, { recursive: true });
     await fs.writeFile(
@@ -124,7 +191,21 @@ export function createJob(input: Partial<Job>): Job {
     salary: input.salary ?? undefined,
     applyUrl: input.applyUrl!,
     description: input.description ?? undefined,
+  logoUrl: (input as any).logoUrl ?? undefined,
+  curatedDescription: input.curatedDescription ?? undefined,
     createdAt: new Date().toISOString(),
+    source: input.source ?? 'manual',
+    status: input.status ?? 'approved',
+    score: input.score ?? undefined,
+    keywordsMatched: input.keywordsMatched ?? undefined,
+    scoringFactors: input.scoringFactors ?? undefined,
+    isFeatured: input.isFeatured ?? false,
+    crawledAt: input.crawledAt ?? undefined,
+    curatorNotes: input.curatorNotes ?? undefined,
+    originalUrl: input.originalUrl ?? undefined,
+    companySize: input.companySize ?? undefined,
+    experienceLevel: input.experienceLevel ?? undefined,
+  roleCategory: input.roleCategory ?? inferRoleCategory(input),
   };
   const withSlugAndTags = {
     ...base,

@@ -1,4 +1,5 @@
 import crypto from "crypto";
+import { NextRequest } from "next/server";
 
 export const ADMIN_COOKIE = "rjb_admin";
 
@@ -29,4 +30,9 @@ export function verifyAdminToken(token: string | undefined | null, ttlMs = DEFAU
   const age = Date.now() - Number(ts);
   if (!Number.isFinite(age) || age < 0 || age > ttlMs) return false;
   return true;
+}
+
+export function isAdmin(request: NextRequest): boolean {
+  const token = request.cookies.get(ADMIN_COOKIE)?.value;
+  return verifyAdminToken(token);
 }

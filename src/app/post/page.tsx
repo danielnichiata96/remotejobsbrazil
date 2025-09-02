@@ -36,6 +36,7 @@ export default function PostJobPage() {
           salary: data.salary || undefined,
           applyUrl: data.applyUrl,
           description: data.description || undefined,
+          logoUrl: data.logoUrl || undefined,
           tags: data.tags || undefined,
         }),
       });
@@ -89,6 +90,12 @@ export default function PostJobPage() {
           <div className="grid gap-1">
             <label htmlFor="salary" className="text-sm font-medium">Salary</label>
             <input id="salary" name="salary" className="border border-[var(--color-border)] rounded-md px-3 py-2 bg-transparent focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]" placeholder="$..." />
+          </div>
+
+          <div className="grid gap-1">
+            <label htmlFor="logoUrl" className="text-sm font-medium">Logo URL (opcional)</label>
+            <input id="logoUrl" name="logoUrl" type="url" className="border border-[var(--color-border)] rounded-md px-3 py-2 bg-transparent focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]" placeholder="https://cdn.company.com/logo.png" />
+            <p className="text-xs text-foreground/60">Se vazio, tentaremos buscar o ícone automaticamente pelo domínio da empresa.</p>
           </div>
 
           <div className="grid gap-1">

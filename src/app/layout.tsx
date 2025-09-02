@@ -23,8 +23,8 @@ export const metadata: Metadata = {
     title: "Remote Jobs Brazil 🇧🇷",
     description: "100% remote jobs for Brazil. Next.js + Supabase.",
     type: "website",
-    locale: "en_US",
-    alternateLocale: "pt_BR",
+  locale: "pt_BR",
+  alternateLocale: "en_US",
     siteName: "Remote Jobs Brazil",
     url: "/",
     images: [
@@ -66,9 +66,12 @@ export default function RootLayout({
     sameAs: [],
   };
   return (
-    <html lang="en-US">
+  <html lang="pt-BR">
       <head>
   <link rel="alternate" type="application/atom+xml" href="/feed.xml" />
+  <link rel="alternate" type="application/atom+xml" href="/feed/react.xml" />
+  <link rel="alternate" type="application/atom+xml" href="/feed/node.xml" />
+  <link rel="alternate" type="application/atom+xml" href="/feed/qa.xml" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}

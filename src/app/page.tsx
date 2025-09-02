@@ -1,12 +1,26 @@
 import { readJobs, type Job } from "@/lib/jobs";
 import { Hero } from "@/components/Hero";
 import JobList from "@/components/JobList";
+import Pagination from "@/components/Pagination";
 
 // Enable ISR with revalidation every 5 minutes
 export const revalidate = 300; // 5 minutes
 
-export default async function Home() {
-  const jobs: Job[] = await readJobs();
+export default async function Home({ searchParams }: { searchParams?: Promise<Record<string, string | string[] | undefined>> } = {}) {
+  const jobsAll: Job[] = await readJobs();
+  const approved = jobsAll.filter(j => j.status === 'approved' || j.status === 'featured');
+
+  // Basic server-side pagination via URL ?page=1&perPage=20
+  const params = await searchParams;
+  const pageParam = Array.isArray(params?.page) ? params?.page[0] : params?.page;
+  const perPageParam = Array.isArray(params?.perPage) ? params?.perPage[0] : params?.perPage;
+  const perPage = Math.min(Math.max(Number(perPageParam) || 20, 5), 50); // clamp 5..50
+  const total = approved.length;
+  const totalPages = Math.max(1, Math.ceil(total / perPage));
+  const page = Math.min(Math.max(Number(pageParam) || 1, 1), totalPages);
+  const start = (page - 1) * perPage;
+  const end = start + perPage;
+  const pageItems = approved.slice(start, end);
   return (
     <>
       <Hero />
@@ -40,7 +54,10 @@ export default async function Home() {
 
           {/* Jobs list */}
           <div className="md:col-span-9">
-            <JobList jobs={jobs} />
+            <JobList jobs={pageItems} />
+            <div className="mt-8">
+              <Pagination total={total} page={page} perPage={perPage} />
+            </div>
           </div>
         </div>
       </section>

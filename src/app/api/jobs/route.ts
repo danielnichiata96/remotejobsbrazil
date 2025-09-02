@@ -32,7 +32,7 @@ export async function POST(request: NextRequest) {
     // Support both JSON and form submissions
     let data: Partial<Job> = {};
     const contentType = request.headers.get("content-type") || "";
-    if (contentType.includes("application/json")) {
+  if (contentType.includes("application/json")) {
       const json = (await request.json()) as unknown;
       if (json && typeof json === "object") {
         const o = json as Record<string, unknown>;
@@ -44,6 +44,7 @@ export async function POST(request: NextRequest) {
           salary: typeof o.salary === "string" ? o.salary : undefined,
           applyUrl: typeof o.applyUrl === "string" ? o.applyUrl : undefined,
           description: typeof o.description === "string" ? o.description : undefined,
+      logoUrl: typeof o.logoUrl === "string" ? o.logoUrl : undefined,
           tags: normalizeTags(o.tags as unknown),
         };
       }
@@ -57,6 +58,7 @@ export async function POST(request: NextRequest) {
   const salary = form.get("salary");
   const applyUrl = form.get("applyUrl");
   const description = form.get("description");
+  const logoUrl = form.get("logoUrl");
   const tagsRaw = form.get("tags");
   if (typeof title === "string") obj.title = title;
   if (typeof company === "string") obj.company = company;
@@ -65,6 +67,7 @@ export async function POST(request: NextRequest) {
   if (typeof salary === "string") obj.salary = salary;
   if (typeof applyUrl === "string") obj.applyUrl = applyUrl;
   if (typeof description === "string") obj.description = description;
+  if (typeof logoUrl === "string") obj.logoUrl = logoUrl;
   if (typeof tagsRaw === "string") obj.tags = normalizeTags(tagsRaw);
   data = obj;
     } else {
@@ -111,10 +114,11 @@ export async function POST(request: NextRequest) {
         type: job.type ?? null,
         salary: job.salary ?? null,
         apply_url: job.applyUrl,
-        description: job.description ?? null,
+  description: job.description ?? null,
         created_at: job.createdAt,
         slug: job.slug ?? null,
         tags: job.tags ?? null,
+  logo_url: (job as any).logoUrl ?? null,
       });
       if (!error) {
         // Revalidate cache after successful job creation

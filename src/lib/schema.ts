@@ -9,6 +9,7 @@ const RawJobInputSchema = z.object({
   type: z.string().max(40).optional(),
   salary: z.string().max(140).optional(),
   description: z.string().max(8000).optional(),
+  logoUrl: z.string().url().optional(),
   tags: z.union([z.array(z.string()), z.string()]).optional(),
 });
 

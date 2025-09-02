@@ -97,8 +97,34 @@ NEXT_PUBLIC_SITE_URL=http://localhost:3000
 - [x] **Cache Management**: Smart invalidation and background revalidation
 - [x] **Client-side Search**: Instant job search with Fuse.js
 
+### ⚠️ Nota sobre Supabase (fallback temporário)
+
+- Sintoma: ao aprovar/rejeitar no Admin, erro PGRST204 “Could not find the 'status' column of 'jobs'”.
+- Causa: a tabela `jobs` do Supabase ainda não tem as colunas de curadoria/score (ex.: `status`, `curated_description`, `role_category`).
+- Comportamento atual (temporário):
+  - A API tenta atualizar via Supabase; se a coluna não existir (PGRST204), faz fallback e salva em `data/jobs.json` para não quebrar o fluxo.
+  - A homepage só exibe vagas com `status` 'approved' ou 'featured'.
+  - Vagas vindas dos crawlers são salvas como `pending` por padrão.
+
+Como corrigir de forma permanente (migrar Supabase):
+1) Aplique a migration com as colunas novas:
+   - Arquivo: `supabase/migrations/20250901120000_job-scoring-system.sql`
+   - Via CLI (opcional):
+   ```bash
+   supabase login
+   supabase link
+   supabase db push
+   ```
+   - Ou cole o SQL no SQL Editor do Supabase.
+2) Atualize o cache de schema do PostgREST (se necessário, reinicie o projeto no painel do Supabase).
+3) Verifique se a tabela `jobs` contém as colunas: `status`, `curated_description`, `role_category`, `score`, `keywords_matched`, `scoring_factors`, `is_featured`, `crawled_at`, etc.
+4) Teste uma aprovação no Admin. Se a migration estiver aplicada, a API usará o DB sem cair no fallback.
+
+Observação: não é necessário desativar nada no código após a migração; o fallback só aciona quando o Supabase retorna erro de coluna ausente.
+
 ### 📈 Quality Metrics
- **Tests**: 12 files / 19 testes passando (slug generation, tag normalization, API, pages)
+ **Tests**: 25 files / 50 testes passando (slug, tags, API, pages, utils)
+ **Coverage**: ~24% statements (v8)
  **Build**: sem erros de TypeScript/ESLint no build; avisos tratados
  **Bundle (First Load)**: ~127 kB (build atual)
  **Pages**: 14+ rotas (dinâmicas + estáticas)
@@ -190,6 +216,7 @@ import { Button, Input, Card, Badge } from "@/components/ui";
 
 ### Phase 2B: Content & SEO (Next 14 days) 📈
 - [x] **Meta Improvements**: Enhanced Open Graph images for social sharing (dynamic generation)  
+- [x] **Resumo PT-BR (Curadoria)**: Campo no Admin para editar `curatedDescription` com preview e persistência
 - [ ] **Rich Content**: Add 20+ real Brazilian remote jobs
 - [ ] **Structured Data**: Expand JSON-LD with company/salary details
 - [ ] **Sitemap**: Include lastModified dates for better crawling
@@ -282,7 +309,7 @@ import { Button, Input, Card, Badge } from "@/components/ui";
 }
 ```
 
-## � Quick Implementation Guide
+## 🔧 Quick Implementation Guide
 
 ### Priority 1: Infrastructure (This Week) ✅ COMPLETED
 ```bash
@@ -366,7 +393,7 @@ supabase db push    # Apply migrations
 ## 🗄️ Database Schema (Supabase)
 
 ### Jobs Table
-## 🔧 Quick Implementation Guide
+```sql
 create table if not exists jobs (
   id text primary key,
   title text not null,

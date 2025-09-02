@@ -2,10 +2,20 @@ import type { NextConfig } from "next";
 import { withSentryConfig } from "@sentry/nextjs";
 
 const nextConfig: NextConfig = {
-  /* config options here */
-  
-  // Enable source maps for better error tracking in production
+  // Keep config minimal and stable
   productionBrowserSourceMaps: true,
+  experimental: {
+    // Ensure we use the stable webpack-based RSC pipeline
+    // (Turbopack is disabled via scripts; keep defaults here)
+    reactCompiler: false,
+  },
+  images: {
+    remotePatterns: [
+      { protocol: 'https', hostname: 'logo.clearbit.com' },
+      { protocol: 'https', hostname: 'icons.duckduckgo.com' },
+      { protocol: 'https', hostname: 'www.google.com' },
+    ],
+  },
 };
 
 // Make sure adding Sentry options is the last code to run before exporting

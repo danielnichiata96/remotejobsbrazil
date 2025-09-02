@@ -9,13 +9,18 @@ function siteUrl(path = "") {
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const jobs = await readJobs();
   const now = new Date().toISOString();
+  const latestJobDate = jobs[0]?.createdAt || now;
   const items: MetadataRoute.Sitemap = [
-    { url: siteUrl("/"), lastModified: now, changeFrequency: "daily", priority: 1 },
-    { url: siteUrl("/post"), lastModified: now },
-  { url: siteUrl("/employers"), lastModified: now, changeFrequency: "weekly", priority: 0.6 },
-  { url: siteUrl("/remote-react-jobs-brazil"), lastModified: now, changeFrequency: "daily", priority: 0.9 },
-  { url: siteUrl("/remote-node-jobs-brazil"), lastModified: now, changeFrequency: "daily", priority: 0.9 },
-  { url: siteUrl("/remote-qa-jobs-brazil"), lastModified: now, changeFrequency: "daily", priority: 0.9 },
+    { url: siteUrl("/"), lastModified: latestJobDate, changeFrequency: "daily", priority: 1 },
+    { url: siteUrl("/post"), lastModified: now, changeFrequency: "monthly", priority: 0.3 },
+    { url: siteUrl("/employers"), lastModified: now, changeFrequency: "weekly", priority: 0.6 },
+    { url: siteUrl("/remote-react-jobs-brazil"), lastModified: latestJobDate, changeFrequency: "daily", priority: 0.9 },
+    { url: siteUrl("/remote-node-jobs-brazil"), lastModified: latestJobDate, changeFrequency: "daily", priority: 0.9 },
+    { url: siteUrl("/remote-qa-jobs-brazil"), lastModified: latestJobDate, changeFrequency: "daily", priority: 0.9 },
+  // Category feeds for discovery
+  { url: siteUrl("/feed/react.xml"), lastModified: latestJobDate, changeFrequency: "daily", priority: 0.2 },
+  { url: siteUrl("/feed/node.xml"), lastModified: latestJobDate, changeFrequency: "daily", priority: 0.2 },
+  { url: siteUrl("/feed/qa.xml"), lastModified: latestJobDate, changeFrequency: "daily", priority: 0.2 },
   ];
   for (const j of jobs) {
     items.push({
