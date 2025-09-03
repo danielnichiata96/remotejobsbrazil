@@ -313,14 +313,4 @@ async function getRelatedJobs(job: Job): Promise<{ related: Job[]; all: Job[] }>
   return { related, all };
 }
 
-function withUtm(url: string): string {
-  try {
-    const u = new URL(url);
-    if (!u.searchParams.get('utm_source')) u.searchParams.set('utm_source', 'remotejobsbrazil');
-    if (!u.searchParams.get('utm_medium')) u.searchParams.set('utm_medium', 'job_board');
-    if (!u.searchParams.get('utm_campaign')) u.searchParams.set('utm_campaign', 'apply_button');
-    return u.toString();
-  } catch {
-    return url;
-  }
-}
+// ...

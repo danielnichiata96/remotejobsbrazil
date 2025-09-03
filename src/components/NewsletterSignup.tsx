@@ -39,7 +39,7 @@ export default function NewsletterSignup() {
       } else {
         setError(data.error || 'Erro ao cadastrar email');
       }
-    } catch (err) {
+  } catch {
       setError('Erro de conexão. Tente novamente.');
     } finally {
       setLoading(false);

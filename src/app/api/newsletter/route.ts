@@ -150,7 +150,7 @@ export async function GET() {
       };
       return NextResponse.json({ success: true, stats });
     }
-  } catch (error) {
+  } catch {
     return NextResponse.json(
       { success: false, error: 'Erro interno' },
       { status: 500 }

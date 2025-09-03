@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { Job } from '@/lib/jobs.shared';
 import { useBookmarks } from '@/hooks/useBookmarks';
 import JobList from './JobList';
@@ -23,12 +24,12 @@ export default function BookmarkedJobsList({ allJobs }: BookmarkedJobsListProps)
         <p className="text-gray-600 dark:text-gray-400 mb-4">
           Navegue pelas vagas e clique no ícone ⭐ para salvar suas favoritas
         </p>
-        <a 
-          href="/" 
+        <Link
+          href="/"
           className="inline-flex items-center px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors"
         >
           🔍 Explorar Vagas
-        </a>
+        </Link>
       </div>
     );
   }
