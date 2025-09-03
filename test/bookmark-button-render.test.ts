@@ -23,6 +23,7 @@ const job: any = {
 describe("bookmark button render", () => {
   it("renders star icon in list item", () => {
     const html = renderToString(React.createElement(JobListItem as any, { job }));
-    expect(html).toContain("★");
+  // On SSR initial render, the BookmarkButton renders outlined star (☆)
+  expect(html).toContain("☆");
   });
 });

@@ -7,6 +7,11 @@ vi.mock("next/link", () => ({
     React.createElement("a", { href: props.href }, props.children),
 }));
 
+// SidebarFilters uses next/navigation hooks. Mock to avoid App Router invariant in SSR tests.
+vi.mock("@/components/SidebarFilters", () => ({
+  default: () => null,
+}));
+
 const sampleJobs = [
   {
     id: "id-1",

@@ -8,6 +8,11 @@ vi.mock("next/link", () => ({
     React.createElement("a", { href: props.href }, props.children),
 }));
 
+// Mock SidebarFilters to bypass next/navigation hooks in server render
+vi.mock("@/components/SidebarFilters", () => ({
+  default: () => null,
+}));
+
 const seed = [
   { id: "1", title: "Full React", company: "A", applyUrl: "#", createdAt: new Date().toISOString(), slug: "full-react-1", status: "approved", type: "full-time", tags: ["front-end"] },
   { id: "2", title: "Part Node", company: "B", applyUrl: "#", createdAt: new Date().toISOString(), slug: "part-node-2", status: "approved", type: "part-time", tags: ["back-end"] },

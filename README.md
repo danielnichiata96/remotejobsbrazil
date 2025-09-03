@@ -200,30 +200,27 @@ import { Button, Input, Card, Badge } from "@/components/ui";
 
 // Consistent inputs
 <Input placeholder="Themed input" />
-<Label>Accessible labels</Label>
-
-// Themed containers
-<Card>
   <CardHeader>Header</CardHeader>
   <CardContent>Content</CardContent>
-</Card>
-```
-
-## 📋 Next Steps & Roadmap
-
+### 📈 Quality Metrics
+ **Tests**: 31 files / 75 testes passando (slug, tags, API, pages, utils)
+ **Coverage**: ~28.5% statements (v8)
+ **Build**: sem erros de TypeScript no build; ESLint limpo (apenas avisos informativos)
+ **Bundle (First Load JS shared)**: ~220 kB (build Next.js 15 atual)
+ **Pages**: 30+ rotas (dinâmicas + estáticas)
 ### Phase 2A: Infrastructure & Performance ✅ COMPLETED
 - [x] **Error Monitoring**: Sentry for production error tracking (client/server/edge)
-- [x] **Analytics**: Vercel Analytics + Speed Insights implemented
-- [x] **Performance**: Add `loading.tsx` skeletons for all routes
-- [x] **Caching**: ISR (Incremental Static Regeneration) with smart revalidation
-- [x] **Rate Limiting**: Upstash Redis-based API protection with fallback
-
+### Phase 2C: User Experience (Next 21 days) ⚡
+- [ ] **Search Enhancements**: Add advanced filters and ranking; search across descriptions
+- [x] **Filtering (server + URL)**: Sidebar com filtros que atualizam `searchParams` (type, tags, location, salary) e filtragem no servidor
+- [x] **Pagination**: Handle 50+ jobs com paginação preservando filtros via URL  
+- [x] **Bookmarks**: Favoritos em localStorage com botão de estrela na lista e na página da vaga (sem auth)
+- [ ] **Share**: Social sharing buttons for individual jobs
 ### Phase 2B: Content & SEO (Next 14 days) 📈
 - [x] **Meta Improvements**: Enhanced Open Graph images for social sharing (dynamic generation)  
-- [x] **Resumo PT-BR (Curadoria)**: Campo no Admin para editar `curatedDescription` com preview e persistência
-- [ ] **Rich Content**: Add 20+ real Brazilian remote jobs
-- [x] **Structured Data**: Expand JSON-LD with company/salary details
-- [x] **Sitemap**: Include lastModified dates for better crawling
+ - Em testes SSR que importam a homepage, faça mock de `@/components/SidebarFilters` para evitar hooks de `next/navigation` (App Router) no render do servidor.
+ - O `BookmarkButton` renderiza estrela vazia (☆) no SSR inicial e alterna para cheia (★) no cliente após interação.
+ - Coverage HTML é gerado em `html/index.html` quando rodado com `npm run test -- --coverage --reporter=html`.
 - [ ] **robots.txt**: Fine-tune crawler directives
 
 ### Phase 2C: User Experience (Next 21 days) ⚡
@@ -245,29 +242,8 @@ import { Button, Input, Card, Badge } from "@/components/ui";
 - [ ] **Employer Dashboard**: Self-service job posting with Stripe billing
 - [ ] **Job Packages**: Bulk posting discounts for agencies
 - [ ] **Premium Features**: Priority support, featured placements
-- [ ] **API Access**: Developer API with tiered rate limiting
-
-### Phase 5: Scale & Expansion (90+ days) 🌍
-- [ ] **Multi-language**: Portuguese localization for Brazilian companies  
-- [ ] **Geographic Expansion**: Argentina, Chile, Colombia remote jobs
-- [ ] **Mobile App**: React Native companion with push notifications
-- [ ] **Community**: Company reviews, salary transparency, team insights
-- [ ] **Integrations**: Slack bot, browser extension, ATS partnerships
-
-## 🔧 Architecture & Tech Stack
-
-### Frontend
-- **Next.js 15**: App Router, server components, dynamic rendering
-- **React 19**: Latest features and performance improvements  
-- **Tailwind CSS v4**: Utility-first styling with Brazilian theme tokens
-- **TypeScript**: Full type safety across the application
-- **Design System**: Reusable UI components with CSS custom properties
-
 ### Backend & Data
 - **Supabase**: PostgreSQL database with real-time capabilities
-- **API Routes**: Next.js server functions for CRUD operations
-- **Zod Validation**: Runtime type checking and data sanitization
-- **HMAC Auth**: Secure admin authentication with cookies
 
 ### SEO & Performance
 - **Dynamic SSR**: Fresh data on every page load
