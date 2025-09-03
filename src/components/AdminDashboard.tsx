@@ -121,10 +121,8 @@ export default function AdminDashboard({ initialJobs }: AdminDashboardProps) {
       });
       
       if (response.ok) {
-        setJobs(jobs.map(job => 
-          selectedJobs.has(job.id) ? { ...job, status: newStatus } : job
-        ));
-        setSelectedJobs(new Set());
+        // Force a reload to get the freshest data from the server
+        window.location.reload();
       }
     } catch (error) {
       console.error('Failed to bulk update jobs:', error);
