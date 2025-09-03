@@ -34,6 +34,7 @@ export type Job = {
   curatedDescription?: string; // short curated summary in PT-BR
   logoUrl?: string; // optional curated logo URL
   createdAt: string; // ISO string
+  updatedAt?: string; // ISO string for when the job was last updated
   slug?: string; // SEO-friendly slug
   tags?: string[]; // normalized, lowercase
   

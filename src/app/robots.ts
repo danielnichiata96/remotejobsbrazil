@@ -4,16 +4,12 @@ export default function robots(): MetadataRoute.Robots {
   const host = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
   const base = host.replace(/\/$/, "");
   return {
-    rules: [
-      { userAgent: "*", allow: "/" },
-      // Disallow API and internal tooling from being crawled
-      { userAgent: "*", disallow: [
-        "/api/",
-        "/_next/",
-        "/admin",
-        "/import",
-      ] },
-    ],
+    // Allow only the public discovery endpoints; block internal APIs and admin pages
+    rules: {
+      userAgent: "*",
+      allow: ["/", "/sitemap.xml", "/feed.xml"],
+      disallow: ["/api/", "/_next/", "/admin", "/admin/", "/post", "/import"],
+    },
     sitemap: `${base}/sitemap.xml`,
     host: base,
   };

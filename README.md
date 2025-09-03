@@ -60,10 +60,12 @@ create table if not exists jobs (
   apply_url text not null,
   description text,
   created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now(),
   slug text,
   tags text[]
 );
 create index if not exists jobs_created_at_idx on jobs (created_at desc);
+create index if not exists jobs_updated_at_idx on jobs (updated_at desc);
 create index if not exists jobs_slug_idx on jobs (slug);
 ```
 
@@ -108,7 +110,9 @@ NEXT_PUBLIC_SITE_URL=http://localhost:3000
 
 Como corrigir de forma permanente (migrar Supabase):
 1) Aplique a migration com as colunas novas:
-   - Arquivo: `supabase/migrations/20250901120000_job-scoring-system.sql`
+   - Arquivos: 
+     - `supabase/migrations/20250901120000_job-scoring-system.sql`
+     - `supabase/migrations/20250903090000_add_updated_at.sql`
    - Via CLI (opcional):
    ```bash
    supabase login
@@ -123,7 +127,7 @@ Como corrigir de forma permanente (migrar Supabase):
 Observação: não é necessário desativar nada no código após a migração; o fallback só aciona quando o Supabase retorna erro de coluna ausente.
 
 ### 📈 Quality Metrics
- **Tests**: 25 files / 50 testes passando (slug, tags, API, pages, utils)
+ **Tests**: 27 files / 63 testes passando (slug, tags, API, pages, utils)
  **Coverage**: ~24% statements (v8)
  **Build**: sem erros de TypeScript/ESLint no build; avisos tratados
  **Bundle (First Load)**: ~127 kB (build atual)
@@ -218,14 +222,14 @@ import { Button, Input, Card, Badge } from "@/components/ui";
 - [x] **Meta Improvements**: Enhanced Open Graph images for social sharing (dynamic generation)  
 - [x] **Resumo PT-BR (Curadoria)**: Campo no Admin para editar `curatedDescription` com preview e persistência
 - [ ] **Rich Content**: Add 20+ real Brazilian remote jobs
-- [ ] **Structured Data**: Expand JSON-LD with company/salary details
-- [ ] **Sitemap**: Include lastModified dates for better crawling
+- [x] **Structured Data**: Expand JSON-LD with company/salary details
+- [x] **Sitemap**: Include lastModified dates for better crawling
 - [ ] **robots.txt**: Fine-tune crawler directives
 
 ### Phase 2C: User Experience (Next 21 days) ⚡
 - [ ] **Search Enhancements**: Add advanced filters and ranking; search across descriptions
 - [ ] **Filtering**: Interactive filters (salary range, company size, remote level)
-- [ ] **Pagination**: Handle 50+ jobs with server-side pagination  
+- [x] **Pagination**: Handle 50+ jobs with server-side pagination  
 - [ ] **Bookmarks**: Local storage job favorites (no auth required)
 - [ ] **Share**: Social sharing buttons for individual jobs
 
@@ -404,11 +408,13 @@ create table if not exists jobs (
   apply_url text not null,
   description text,
   created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now(),
   slug text,
   tags text[]
 );
 
 create index if not exists jobs_created_at_idx on jobs (created_at desc);
+create index if not exists jobs_updated_at_idx on jobs (updated_at desc);
 create index if not exists jobs_slug_idx on jobs (slug);
 ```
 

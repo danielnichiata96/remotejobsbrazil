@@ -6,29 +6,19 @@ import Pagination from "@/components/Pagination";
 // Enable ISR with revalidation every 5 minutes
 export const revalidate = 300; // 5 minutes
 
-export default async function Home(props?: unknown) {
+type HomePageProps = {
+  searchParams?: {
+    page?: string;
+    perPage?: string;
+  };
+};
+
+export default async function Home({ searchParams }: HomePageProps = {}) {
   const jobsAll: Job[] = await readJobs();
   const approved = jobsAll.filter(j => j.status === 'approved' || j.status === 'featured');
 
-  // Extract searchParams safely from props (supports either Promise-based or plain Record)
-  const maybeSearchParams = (props && typeof props === 'object' ? (props as Record<string, unknown>).searchParams : undefined) as
-    | Promise<Record<string, string | string[] | undefined>>
-    | Record<string, string | string[] | undefined>
-    | undefined;
-
-  let params: Record<string, string | string[] | undefined> | undefined;
-  try {
-    const maybeThenable = maybeSearchParams as unknown;
-    if (maybeThenable && typeof (maybeThenable as { then?: unknown }).then === 'function') {
-      params = await (maybeThenable as Promise<Record<string, string | string[] | undefined>>);
-    } else {
-      params = maybeSearchParams as Record<string, string | string[] | undefined> | undefined;
-    }
-  } catch {
-    params = undefined;
-  }
-  const pageParam = Array.isArray(params?.page) ? params?.page[0] : params?.page;
-  const perPageParam = Array.isArray(params?.perPage) ? params?.perPage[0] : params?.perPage;
+  const pageParam = searchParams?.page;
+  const perPageParam = searchParams?.perPage;
   const perPage = Math.min(Math.max(Number(perPageParam) || 20, 5), 50); // clamp 5..50
   const total = approved.length;
   const totalPages = Math.max(1, Math.ceil(total / perPage));

@@ -9,9 +9,11 @@ create table if not exists jobs (
   apply_url text not null,
   description text,
   created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now(),
   slug text,
   tags text[]
 );
 
 create index if not exists jobs_created_at_idx on jobs (created_at desc);
+create index if not exists jobs_updated_at_idx on jobs (updated_at desc);
 create index if not exists jobs_slug_idx on jobs (slug);

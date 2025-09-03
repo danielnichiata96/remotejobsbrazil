@@ -25,7 +25,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   for (const j of jobs) {
     items.push({
       url: siteUrl(`/jobs/${getSlug(j)}`),
-      lastModified: j.createdAt,
+      lastModified: j.updatedAt || j.createdAt,
       changeFrequency: "weekly",
       priority: 0.7,
     });

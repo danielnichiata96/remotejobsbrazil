@@ -172,35 +172,131 @@ async function findBySlugOrId(slugOrId: string): Promise<Job | undefined> {
 }
 
 function jobToJsonLd(job: Job) {
+  const org: Record<string, unknown> = {
+    "@type": "Organization",
+    name: job.company,
+    sameAs: job.applyUrl,
+  };
+  if (job.logoUrl) {
+    org.logo = job.logoUrl;
+  }
+
   const base: Record<string, unknown> = {
     "@context": "https://schema.org/",
     "@type": "JobPosting",
     title: job.title,
-  description: job.curatedDescription || job.description || job.title,
+    description: job.curatedDescription || job.description || job.title,
     inLanguage: "pt-BR",
     datePosted: job.createdAt,
+    // Set expiration for 60 days from creation, a common job board practice
+    validThrough: new Date(new Date(job.createdAt).getTime() + 1000 * 60 * 60 * 24 * 60).toISOString(),
     employmentType: job.type || "Full-time",
-    hiringOrganization: {
-      "@type": "Organization",
-      name: job.company,
-      sameAs: job.applyUrl,
-    },
+    hiringOrganization: org,
     jobLocationType: "TELECOMMUTE",
+    jobLocation: {
+      "@type": "Place",
+      address: {
+        "@type": "PostalAddress",
+        addressCountry: "BR",
+      },
+    },
     applicantLocationRequirements: { "@type": "Country", name: "BR" },
     directApply: true,
-    validThrough: new Date(Date.now() + 1000 * 60 * 60 * 24 * 60).toISOString(),
     identifier: { "@type": "PropertyValue", value: job.id, name: job.company },
-    // Provide a canonical URL for the job posting
     url: siteUrl(`/jobs/${getSlug(job)}`),
   };
+
   if (job.salary) {
-    // Use a safe schema property to include free-form salary text
-    (base as Record<string, unknown>)['estimatedSalary'] = job.salary;
+    // Keep human-readable text for search engines that accept free text
+    (base as Record<string, unknown>).estimatedSalary = job.salary;
+    // Try to provide structured salary for richer results when parsable
+    const structured = parseSalaryToBaseSalary(job.salary);
+    if (structured) {
+      (base as Record<string, unknown>).baseSalary = structured;
+    }
   }
   if (job.roleCategory) {
-    (base as Record<string, unknown>)['occupationalCategory'] = job.roleCategory;
+    base.occupationalCategory = job.roleCategory;
   }
+  if (job.experienceLevel) {
+    base.experienceRequirements = job.experienceLevel;
+  }
+
   return base;
+}
+
+// Try to parse a BR salary like "R$ 18k–25k/mês", "R$ 20.000/mês", "R$ 240k/ano"
+// and convert into a schema.org MonetaryAmount with QuantitativeValue.
+function parseSalaryToBaseSalary(salary: string): Record<string, unknown> | undefined {
+  try {
+    const src = String(salary).trim().toLowerCase();
+    // Detect currency (default to BRL when R$ present)
+    const currency = src.includes("r$") || src.includes("brl") ? "BRL" : undefined;
+    // Detect unit
+    let unitText: "HOUR" | "DAY" | "WEEK" | "MONTH" | "YEAR" | undefined;
+    if (/m[eê]s|\/m[eê]s|monthly/.test(src)) unitText = "MONTH";
+    else if (/ano|anual|\/ano|year|yearly/.test(src)) unitText = "YEAR";
+    else if (/semana|\/sem|week/.test(src)) unitText = "WEEK";
+    else if (/dia|\/dia|day/.test(src)) unitText = "DAY";
+    else if (/hora|\/h|hour/.test(src)) unitText = "HOUR";
+
+    // Extract numeric range or single number
+    // Support formats with k, thousands separators, and ranges with -, – or "a"/"to"
+    const rangeRe = /([0-9]+(?:[\.,][0-9]+)?k?)\s*(?:–|-|to|a)\s*([0-9]+(?:[\.,][0-9]+)?k?)/i;
+    const singleRe = /([0-9]+(?:[\.,][0-9]+)?k?)/i;
+
+    function parseAmount(token: string): number | undefined {
+      let t = token.trim();
+      let mult = 1;
+      if (t.endsWith("k")) {
+        mult = 1000;
+        t = t.slice(0, -1);
+      }
+      // Remove thousands separators and normalize decimal comma
+      t = t.replace(/\./g, "").replace(/,/g, ".");
+      const n = Number(t);
+      if (!isFinite(n) || n <= 0) return undefined;
+      return Math.round(n * mult);
+    }
+
+    const rangeMatch = src.match(rangeRe);
+    if (rangeMatch) {
+      const min = parseAmount(rangeMatch[1]);
+      const max = parseAmount(rangeMatch[2]);
+      if (min && max) {
+        return {
+          "@type": "MonetaryAmount",
+          ...(currency ? { currency } : {}),
+          value: {
+            "@type": "QuantitativeValue",
+            minValue: min,
+            maxValue: max,
+            ...(unitText ? { unitText } : {}),
+          },
+        };
+      }
+    }
+
+    const singleMatch = src.match(rangeRe) ? undefined : src.match(singleRe);
+    if (singleMatch) {
+      const val = parseAmount(singleMatch[1]);
+      if (val) {
+        return {
+          "@type": "MonetaryAmount",
+          ...(currency ? { currency } : {}),
+          value: {
+            "@type": "QuantitativeValue",
+            value: val,
+            ...(unitText ? { unitText } : {}),
+          },
+        };
+      }
+    }
+
+    return undefined;
+  } catch {
+    return undefined;
+  }
 }
 function sanitizeDescription(desc?: string): string {
   if (!desc) return '';
