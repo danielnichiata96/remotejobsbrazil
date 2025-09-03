@@ -22,7 +22,9 @@ export default function JobList({ jobs }: { jobs: Job[] }) {
 
   return (
     <div>
-      <div className="mb-4 flex items-center gap-3">
+  {/* Local fuzzy search input */
+  }
+  <div className="mb-4 flex items-center gap-3">
         <input
           value={query}
           onChange={(e) => setQuery(e.target.value)}

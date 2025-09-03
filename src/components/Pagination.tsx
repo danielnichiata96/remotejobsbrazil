@@ -1,4 +1,7 @@
+"use client";
+
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 
 type Props = {
   total: number;
@@ -7,11 +10,12 @@ type Props = {
 };
 
 export default function Pagination({ total, page, perPage }: Props) {
+  const sp = useSearchParams();
   const totalPages = Math.max(1, Math.ceil(total / perPage));
   if (totalPages <= 1) return null;
 
   const mkHref = (p: number) => {
-    const params = new URLSearchParams();
+    const params = new URLSearchParams(sp?.toString());
     if (p > 1) params.set("page", String(p));
     if (perPage !== 20) params.set("perPage", String(perPage));
     const qs = params.toString();

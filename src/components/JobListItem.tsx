@@ -2,6 +2,7 @@ import Link from "next/link";
 import type { Job } from "@/lib/jobs.shared";
 import { getSlug } from "@/lib/jobs.shared";
 import { CompanyLogo } from "@/components/CompanyLogo";
+import BookmarkButton from "@/components/BookmarkButton";
 
 export function JobListItem({ job }: { job: Job }) {
   return (
@@ -18,6 +19,9 @@ export function JobListItem({ job }: { job: Job }) {
                 Featured
               </span>
             ) : null}
+            <div className="ml-1">
+              <BookmarkButton jobId={job.id} size="sm" variant="icon" />
+            </div>
           </div>
           <div className="text-sm text-[var(--color-foreground)]/70 truncate">
             {job.company} • {job.location} • {job.type}

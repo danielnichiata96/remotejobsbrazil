@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import { TagChip } from "@/components/TagChip";
 import { CompanyLogo } from "@/components/CompanyLogo";
 import { ApplyButton } from "@/components/ApplyButton";
+import BookmarkButton from "@/components/BookmarkButton";
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -83,6 +84,7 @@ export default async function JobPage({ params }: Props) {
         <div className="flex items-center gap-3">
           <CompanyLogo job={job} size={44} className="shrink-0" />
           <h1 className="text-3xl font-bold">{job.title}</h1>
+          <BookmarkButton jobId={job.id} size="md" variant="icon" />
         </div>
         <p className="mt-2 text-sm text-foreground/70">
           <span className="font-medium text-foreground">{job.company}</span>
