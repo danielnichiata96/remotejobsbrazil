@@ -33,6 +33,8 @@ export type Job = {
   description?: string;
   curatedDescription?: string; // short curated summary in PT-BR
   logoUrl?: string; // optional curated logo URL
+  // Small derived field for UI: inferred company website domain (e.g., acme.com)
+  companyDomain?: string;
   createdAt: string; // ISO string
   updatedAt?: string; // ISO string for when the job was last updated
   slug?: string; // SEO-friendly slug
@@ -134,6 +136,12 @@ function isExcludedHost(hostname: string): boolean {
 }
 
 export function getCompanyDomain(job: Job): string | undefined {
+  // If domain is already provided, prefer it (and ensure it's not an excluded host)
+  if ((job as unknown as { companyDomain?: string }).companyDomain) {
+    const d = (job as unknown as { companyDomain?: string }).companyDomain!.replace(/^www\./, "").toLowerCase();
+    if (d && !isExcludedHost(d)) return d;
+  }
+
   const candidates: string[] = [];
   if (job.originalUrl) candidates.push(job.originalUrl);
   if (job.applyUrl) candidates.push(job.applyUrl);
@@ -174,6 +182,10 @@ export function getLogoCandidates(job: Job): string[] {
     list.push(`https://logo.clearbit.com/${domain}?size=128`);
     // DuckDuckGo icons (ICO → browser scales fine for small sizes)
     list.push(`https://icons.duckduckgo.com/ip3/${domain}.ico`);
+  // Site favicon fallbacks
+  list.push(`https://${domain}/favicon.ico`);
+  list.push(`https://${domain}/favicon.png`);
+  list.push(`https://${domain}/favicon.svg`);
   }
   return list;
 }

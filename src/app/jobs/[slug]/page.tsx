@@ -4,6 +4,7 @@ import { readJobs, type Job, getSlug } from "@/lib/jobs";
 import { notFound } from "next/navigation";
 import { TagChip } from "@/components/TagChip";
 import { CompanyLogo } from "@/components/CompanyLogo";
+import { ApplyButton } from "@/components/ApplyButton";
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -118,30 +119,12 @@ export default async function JobPage({ params }: Props) {
             </pre>
           </section>
         )}
-    <div className="mt-8">
-          <a
-            href={withUtm(job.applyUrl)}
-            target="_blank"
-            rel="noopener noreferrer"
-            onClick={() => {
-              try {
-                // Lazy import to avoid affecting SSR
-                import("@vercel/analytics").then(({ track }) => {
-                  try {
-                    track("apply_click", {
-                      job_id: job.id,
-                      company: job.company,
-                      title: job.title,
-                      roleCategory: job.roleCategory || "unknown",
-                    });
-                  } catch {}
-                }).catch(() => {});
-              } catch {}
-            }}
-      className="inline-flex items-center justify-center rounded-md bg-[var(--color-accent)] text-[var(--color-accent-foreground)] px-5 py-2 text-sm font-medium hover:brightness-95"
-          >
-            Apply →
-          </a>
+        <div className="mt-8">
+          <ApplyButton
+            url={job.applyUrl}
+            job={{ id: job.id, company: job.company, title: job.title, roleCategory: job.roleCategory }}
+            className="inline-flex items-center justify-center rounded-md bg-[var(--color-accent)] text-[var(--color-accent-foreground)] px-5 py-2 text-sm font-medium hover:brightness-95"
+          />
         </div>
       </div>
       {/* Related jobs */}

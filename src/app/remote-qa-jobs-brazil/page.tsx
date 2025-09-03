@@ -1,4 +1,4 @@
-import { readJobs } from "@/lib/jobs";
+import { readJobsLightCached } from "@/lib/cache";
 import { JobListItem } from "@/components/JobListItem";
 import { Metadata } from "next";
 
@@ -19,7 +19,7 @@ export const metadata: Metadata = {
 };
 
 export default async function Page() {
-  const jobs = await readJobs();
+  const jobs = await readJobsLightCached();
   const filtered = jobs.filter((j) =>
     (j.tags && (j.tags.includes("qa") || j.tags.includes("testing") || j.tags.includes("quality"))) || /(qa|quality|test)/i.test(`${j.title} ${j.description || ""}`)
   );

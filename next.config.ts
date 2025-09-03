@@ -19,7 +19,7 @@ const nextConfig: NextConfig = {
 };
 
 // Make sure adding Sentry options is the last code to run before exporting
-export default withSentryConfig(nextConfig, {
+const withSentry = withSentryConfig(nextConfig, {
   // For all available options, see:
   // https://github.com/getsentry/sentry-webpack-plugin#options
 
@@ -50,3 +50,6 @@ export default withSentryConfig(nextConfig, {
   // https://vercel.com/docs/cron-jobs
   automaticVercelMonitors: true,
 });
+
+// Avoid wrapping dev config to reduce noisy vendor-chunk wiring during HMR
+export default process.env.NODE_ENV === 'production' ? withSentry : nextConfig;

@@ -7,7 +7,9 @@ vi.mock("@/lib/jobs", async (og) => {
   const mod = await og<typeof import("@/lib/jobs")>();
   return {
     ...mod,
-    readJobs: vi.fn(async () => []),
+    readJobs: vi.fn(async () => [
+      { id: 'x', title: 'React Dev', company: 'Acme', applyUrl: 'https://example.com', createdAt: '2024-01-01T00:00:00.000Z', source: 'manual', status: 'approved' }
+    ] as any),
     writeJobs: vi.fn(async () => ({ ok: true })),
   };
 });
@@ -31,7 +33,7 @@ describe("POST /api/jobs/bulk", () => {
   it("creates multiple valid jobs and reports errors", async () => {
     const body = {
       jobs: [
-        { title: "React Dev", company: "Acme", applyUrl: "https://example.com" },
+        { title: "React Dev 2", company: "Acme", applyUrl: "https://example.com/2" },
         { company: "Acme" }, // invalid
       ],
     };
@@ -41,5 +43,17 @@ describe("POST /api/jobs/bulk", () => {
     expect(Array.isArray(json.created)).toBe(true);
     expect(Array.isArray(json.errors)).toBe(true);
     expect(json.errors.length).toBe(1);
+  });
+
+  it("skips duplicate jobs by (applyUrl,title,company)", async () => {
+    const body = {
+      jobs: [
+        { title: "React Dev", company: "Acme", applyUrl: "https://example.com" }, // duplicate of existing
+      ],
+    };
+    const res = await POST(jsonReq(body) as unknown as NextRequest);
+    const json = await res.json();
+    expect(json.created.length).toBe(0);
+    expect(json.errors.some((e: any) => /Duplicate job/.test(e.message))).toBe(true);
   });
 });

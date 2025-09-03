@@ -26,6 +26,7 @@ export async function readJobs(): Promise<Job[]> {
       description: string | null;
   curated_description: string | null;
       created_at: string;
+  updated_at?: string | null;
       slug: string | null;
       tags: string[] | null;
     logo_url?: string | null;
@@ -66,8 +67,8 @@ export async function readJobs(): Promise<Job[]> {
   description: r.description ?? undefined,
   logoUrl: (r as unknown as Record<string, unknown>).logo_url as string | undefined ?? undefined,
         curatedDescription: r.curated_description ?? undefined,
-        createdAt: r.created_at,
-        updatedAt: (r as any).updated_at ?? r.created_at,
+  createdAt: r.created_at,
+  updatedAt: r.updated_at ?? r.created_at,
         slug: r.slug ?? undefined,
         tags: r.tags ?? undefined,
         source: (r.source as JobSource) ?? 'manual',

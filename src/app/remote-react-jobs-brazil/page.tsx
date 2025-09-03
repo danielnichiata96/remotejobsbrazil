@@ -1,4 +1,4 @@
-import { readJobs } from "@/lib/jobs";
+import { readJobsLightCached } from "@/lib/cache";
 import { JobListItem } from "@/components/JobListItem";
 import { Metadata } from "next";
 
@@ -19,7 +19,7 @@ export const metadata: Metadata = {
 };
 
 export default async function Page() {
-  const jobs = await readJobs();
+  const jobs = await readJobsLightCached();
   return (
     <div className="min-h-screen bg-background text-foreground px-6 py-10">
       <div className="max-w-5xl mx-auto">

@@ -7,7 +7,7 @@ export default function robots(): MetadataRoute.Robots {
     // Allow only the public discovery endpoints; block internal APIs and admin pages
     rules: {
       userAgent: "*",
-      allow: ["/", "/sitemap.xml", "/feed.xml"],
+  allow: ["/", "/sitemap.xml", "/feed.xml", "/feed/", "/feed/*.xml"],
       disallow: ["/api/", "/_next/", "/admin", "/admin/", "/post", "/import"],
     },
     sitemap: `${base}/sitemap.xml`,

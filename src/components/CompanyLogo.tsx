@@ -46,6 +46,10 @@ export function CompanyLogo({ job, size = 32, className = "", alt }: Props) {
       alt={alt || `${job.company} logo`}
       width={size}
       height={size}
+      loading="lazy"
+  unoptimized
+  referrerPolicy="no-referrer"
+  sizes={`${size}px`}
       className={`rounded-md object-contain bg-white ${className}`}
       onError={onError}
     />

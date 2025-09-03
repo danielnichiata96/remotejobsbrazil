@@ -1,4 +1,5 @@
-import { readJobs, type Job } from "@/lib/jobs";
+import { type Job } from "@/lib/jobs";
+import { readJobsLightCached } from "@/lib/cache";
 import { Hero } from "@/components/Hero";
 import JobList from "@/components/JobList";
 import Pagination from "@/components/Pagination";
@@ -7,18 +8,20 @@ import Pagination from "@/components/Pagination";
 export const revalidate = 300; // 5 minutes
 
 type HomePageProps = {
-  searchParams?: {
-    page?: string;
-    perPage?: string;
-  };
+  // Next.js 15: searchParams should be awaited
+  searchParams?: Promise<Record<string, string | string[] | undefined>>;
 };
 
-export default async function Home({ searchParams }: HomePageProps = {}) {
-  const jobsAll: Job[] = await readJobs();
-  const approved = jobsAll.filter(j => j.status === 'approved' || j.status === 'featured');
+export default async function Home(props: unknown = {}) {
+  const { searchParams } = (props as HomePageProps) ?? {};
+  const jobsAll: Job[] = await readJobsLightCached();
+  const approved = jobsAll
+    .filter(j => j.status === 'approved' || j.status === 'featured')
+    .sort((a, b) => Number(!!b.isFeatured) - Number(!!a.isFeatured));
 
-  const pageParam = searchParams?.page;
-  const perPageParam = searchParams?.perPage;
+  const sp = searchParams ? await searchParams : undefined;
+  const pageParam = sp?.page;
+  const perPageParam = sp?.perPage;
   const perPage = Math.min(Math.max(Number(perPageParam) || 20, 5), 50); // clamp 5..50
   const total = approved.length;
   const totalPages = Math.max(1, Math.ceil(total / perPage));

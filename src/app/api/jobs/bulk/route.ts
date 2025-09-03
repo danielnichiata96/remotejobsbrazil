@@ -3,6 +3,7 @@ import { createJob, readJobs, validateJob, writeJobs, writeJobsFile, type Job } 
 import { getSupabase } from "@/lib/supabase";
 import { isAdmin } from "@/lib/auth";
 import { JobStatus } from "@/lib/jobs.shared";
+import { revalidateJobs } from "@/lib/cache";
 
 type BulkCreateBody = {
   jobs: Array<Partial<Job>>;
@@ -39,6 +40,7 @@ async function handleUpdateCuratedDescription(body: BulkUpdateCuratedBody): Prom
         .eq('id', jobId);
 
       if (!error) {
+        await (async () => { try { await revalidateJobs(); } catch {} })();
         return NextResponse.json({ success: true, jobId, curatedDescription });
       }
 
@@ -48,6 +50,7 @@ async function handleUpdateCuratedDescription(body: BulkUpdateCuratedBody): Prom
         const updatedJobs = allJobs.map(j => j.id === jobId ? { ...j, curatedDescription: curatedDescription ?? undefined } : j);
         const res = await writeJobsFile(updatedJobs);
         if (res.ok) {
+          await (async () => { try { await revalidateJobs(); } catch {} })();
           return NextResponse.json({ success: true, jobId, curatedDescription, note: 'file-only fallback' });
         }
         return NextResponse.json({ error: res.error ?? 'File write failed' }, { status: 500 });
@@ -63,7 +66,8 @@ async function handleUpdateCuratedDescription(body: BulkUpdateCuratedBody): Prom
     if (!writeResult.ok) {
       throw new Error(writeResult.error);
     }
-    return NextResponse.json({ success: true, jobId, curatedDescription });
+  await (async () => { try { await revalidateJobs(); } catch {} })();
+  return NextResponse.json({ success: true, jobId, curatedDescription });
   } catch (error) {
     console.error('Failed to update curated description:', error);
     return NextResponse.json(
@@ -94,6 +98,7 @@ async function handleUpdateStatus(body: BulkUpdateStatusBody): Promise<NextRespo
         .in('id', jobIds);
 
       if (!error) {
+        await (async () => { try { await revalidateJobs(); } catch {} })();
         return NextResponse.json({
           success: true,
           updated: jobIds.length,
@@ -111,6 +116,7 @@ async function handleUpdateStatus(body: BulkUpdateStatusBody): Promise<NextRespo
         const updatedJobs = allJobs.map(job => jobIds.includes(job.id) ? { ...job, status } : job);
         const res = await writeJobsFile(updatedJobs);
         if (res.ok) {
+          await (async () => { try { await revalidateJobs(); } catch {} })();
           return NextResponse.json({
             success: true,
             updated: jobIds.length,
@@ -135,7 +141,8 @@ async function handleUpdateStatus(body: BulkUpdateStatusBody): Promise<NextRespo
       throw new Error(writeResult.error);
     }
 
-    return NextResponse.json({
+  await (async () => { try { await revalidateJobs(); } catch {} })();
+  return NextResponse.json({
       success: true,
       updated: jobIds.length,
       message: `Updated ${jobIds.length} jobs to ${status}`
@@ -181,6 +188,9 @@ export async function POST(req: NextRequest) {
   }
 
   const existing = await readJobs();
+  const existingKey = new Set(
+    existing.map((j) => `${(j.applyUrl || "").toLowerCase()}|${j.title.toLowerCase()}|${j.company.toLowerCase()}`)
+  );
   const created: Job[] = [];
   const errors: Array<{ index: number; message: string }> = [];
   body.jobs.forEach((raw, index) => {
@@ -189,7 +199,13 @@ export async function POST(req: NextRequest) {
       errors.push({ index, message: valid.message ?? "Invalid job" });
       return;
     }
+    const key = `${String(raw.applyUrl).toLowerCase()}|${String(raw.title).toLowerCase()}|${String(raw.company).toLowerCase()}`;
+    if (existingKey.has(key)) {
+      errors.push({ index, message: "Duplicate job (skipped)" });
+      return;
+    }
     const job = createJob(raw);
+    existingKey.add(key);
     created.push(job);
   });
 
@@ -212,6 +228,7 @@ export async function POST(req: NextRequest) {
     }));
     const { error } = await sb.from("jobs").upsert(payload, { onConflict: "id" });
     if (!error) {
+      await revalidateJobs();
       return NextResponse.json(
         { created: created.map((j) => j.id), errors },
         { status: created.length ? 201 : 400 }
@@ -222,6 +239,8 @@ export async function POST(req: NextRequest) {
   // Fallback to JSON
   const updated = [...created, ...existing];
   const res = await writeJobs(updated);
+  // Revalidate after file write fallback as well
+  await revalidateJobs();
   return NextResponse.json(
     { created: created.map((j) => j.id), errors, warning: res.ok ? undefined : `Persistence warning: ${res.error}` },
     { status: created.length ? 201 : 400 }
