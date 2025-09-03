@@ -430,3 +430,31 @@ NEXT_PUBLIC_SITE_URL=https://your-domain.com
 - **Updates**: Watch the repository for releases
 
 Built with ❤️ for the Brazilian remote work community.
+
+---
+
+## 📬 Newsletter Subscriptions (Setup)
+
+1) Apply the migration `supabase/migrations/20250903140000_subscriptions.sql` in Supabase (SQL Editor) or via CLI:
+```bash
+supabase login
+supabase link
+supabase db push
+```
+
+2) Configure env vars (local `.env.local` / production):
+```bash
+SUPABASE_URL=your-project.supabase.co
+SUPABASE_SERVICE_ROLE=your-service-role-key
+# optional
+SUPABASE_ANON_KEY=your-anon-key
+```
+
+3) Verify locally:
+- POST /api/newsletter { email, tags?, location?, frequency }
+- GET /api/newsletter → stats (total/active/byFrequency)
+- DELETE /api/newsletter?token=... or ?email=...
+
+Notes:
+- A unique `token` is generated on subscribe for unsubscribe links.
+- In dev without env vars, the API falls back to in-memory storage.

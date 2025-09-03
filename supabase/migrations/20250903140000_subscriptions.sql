@@ -1,3 +1,6 @@
+-- Ensure UUID generation is available
+create extension if not exists pgcrypto;
+
 create table if not exists subscriptions (
   id uuid primary key default gen_random_uuid(),
   email text not null unique,
